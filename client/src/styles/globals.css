@@ -1,0 +1,1320 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-white text-dark font-inter overflow-x-hidden;
+}
+
+/* Reusable Container */
+.container-custom {
+  @apply max-w-7xl mx-auto px-4 md:px-6 lg:px-8;
+}
+
+/* Section Spacing */
+.section-padding {
+  @apply py-20 md:py-28;
+}
+
+/* Glass Effect */
+.glass {
+  @apply bg-white/70 backdrop-blur-lg border border-white/20 shadow-glass;
+}
+
+/* Gradient Button */
+.gradient-btn {
+  @apply bg-gradient-to-r from-primary to-accent text-white px-6 py-3 rounded-full font-medium hover:scale-105 transition-all duration-300;
+}
+
+/* Secondary Button */
+.outline-btn {
+  @apply border border-primary text-primary px-6 py-3 rounded-full font-medium hover:bg-primary hover:text-white transition-all duration-300;
+}
+
+/* Heading */
+.heading-xl {
+  @apply text-4xl md:text-6xl font-bold leading-tight font-outfit;
+}
+
+.heading-lg {
+  @apply text-3xl md:text-5xl font-bold font-outfit;
+}
+
+.paragraph {
+  @apply text-gray-600 leading-relaxed;
+}
+
+
+/* ========================================
+   INFINITE CLIENT SLIDER
+======================================== */
+
+.slider-wrapper {
+
+  width: 100%;
+  overflow: hidden;
+
+  position: relative;
+}
+
+.slider-track {
+
+    display: flex;
+    align-items: center;
+
+    height: 130px;
+
+    padding: 15px 0;
+
+    width: max-content;
+
+    animation: marquee 30s linear infinite;
+}
+
+.slider-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+
+}
+
+
+/* CLIENT CARD */
+
+.client-card {
+
+  flex-shrink: 0;
+
+  min-width: 220px;
+  height: 100px;
+
+  padding: 0 30px;
+
+  margin-right: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 24px;
+
+  background: white;
+
+  border: 2px solid #E2E8F0;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+
+  font-size: 1.2rem;
+  font-weight: 700;
+
+  color: #0F172A;
+
+  white-space: nowrap;
+
+  text-decoration: none;
+
+  transition: all 0.3s ease;
+}
+
+.client-card:hover {
+
+  transform: scale(1.03);
+
+  border-color: #00C2A8;
+
+  background: white;
+
+  color: #00C2A8;
+
+  box-shadow: 0 20px 40px rgba(0,194,168,0.15);
+}
+
+
+/* TABLET */
+
+@media (max-width: 1024px) {
+
+  .slider-track {
+    animation-duration: 24s;
+  }
+
+  .client-card {
+
+    min-width: 190px;
+    height: 85px;
+
+    padding: 0 24px;
+
+    margin-right: 18px;
+
+    font-size: 1rem;
+  }
+
+}
+
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+  .slider-wrapper {
+    padding: 10px 0;
+  }
+
+  .slider-track {
+    animation-duration: 18s;
+  }
+
+  .client-card {
+
+    min-width: 140px;
+    height: 65px;
+
+    padding: 0 18px;
+
+    margin-right: 12px;
+
+    border-radius: 16px;
+
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .client-card:hover {
+
+    transform: translateY(-4px);
+
+    box-shadow: 0 10px 20px rgba(0,194,168,0.12);
+  }
+
+}
+
+
+/* SMALL MOBILE */
+
+@media (max-width: 480px) {
+
+  .slider-track {
+    animation-duration: 14s;
+  }
+
+  .client-card {
+
+    min-width: 120px;
+    height: 58px;
+
+    padding: 0 14px;
+
+    margin-right: 10px;
+
+    font-size: 0.78rem;
+
+    border-radius: 14px;
+  }
+
+}
+
+
+/* ========================================
+   BLOG SLIDER
+======================================== */
+
+.blog-slider-wrapper {
+
+  width: 100%;
+  overflow: hidden;
+
+  position: relative;
+
+  padding: 10px 0;
+}
+
+.blog-slider-track {
+
+  display: flex;
+  align-items: stretch;
+
+  gap: 24px;
+
+  width: max-content;
+
+  animation: blogSlider 22s linear infinite;
+}
+
+.blog-slider-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes blogSlider {
+
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+
+}
+
+/* BLOG CARD */
+
+.blog-card {
+
+  flex-shrink: 0;
+
+  width: 380px;
+
+  background: white;
+
+  border: 1px solid #E2E8F0;
+
+  border-radius: 28px;
+
+  padding: 32px;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+
+  transition: all 0.3s ease;
+}
+
+.blog-card:hover {
+
+  transform: translateY(-10px);
+
+  border-color: #00C2A8;
+
+  box-shadow: 0 20px 50px rgba(0,194,168,0.12);
+}
+
+
+/* ========================================
+   LAPTOP
+======================================== */
+
+@media (max-width: 1280px) {
+
+  .blog-card {
+    width: 340px;
+  }
+
+}
+
+
+/* ========================================
+   TABLET
+======================================== */
+
+@media (max-width: 1024px) {
+
+  .blog-slider-track {
+
+    gap: 18px;
+
+    animation-duration: 18s;
+  }
+
+  .blog-card {
+
+    width: 300px;
+
+    padding: 28px;
+
+    border-radius: 24px;
+  }
+
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 768px) {
+
+  .blog-slider-wrapper {
+
+    margin-top: 10px;
+  }
+
+  .blog-slider-track {
+
+    gap: 14px;
+
+    animation-duration: 14s;
+  }
+
+  .blog-card {
+
+    width: 260px;
+
+    padding: 22px;
+
+    border-radius: 20px;
+  }
+
+}
+
+
+/* ========================================
+   SMALL MOBILE
+======================================== */
+
+@media (max-width: 480px) {
+
+  .blog-slider-track {
+
+    gap: 12px;
+
+    animation-duration: 12s;
+  }
+
+  .blog-card {
+
+    width: 220px;
+
+    padding: 18px;
+
+    border-radius: 18px;
+  }
+
+}
+
+
+/* ========================================
+   TECH SLIDER
+======================================== */
+
+/* ========================================
+   TECH SLIDER
+======================================== */
+
+.tech-slider-wrapper {
+
+  width: 100%;
+
+  overflow: hidden;
+
+  position: relative;
+}
+
+.tech-slider-track {
+
+  display: flex;
+  align-items: center;
+
+  gap: 22px;
+
+  width: max-content;
+
+  animation: techSlider 28s linear infinite;
+}
+
+.reverse-tech-slider {
+
+  animation-direction: reverse;
+}
+
+.tech-slider-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes techSlider {
+
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+
+}
+
+
+/* ========================================
+   TECH CARD
+======================================== */
+
+/* ========================================
+   TECH CARD
+======================================== */
+
+/* ========================================
+   TECH CARD
+======================================== */
+
+.tech-card {
+
+  flex-shrink: 0;
+
+  width: 190px;
+
+  background: white;
+
+  border: 1px solid #E2E8F0;
+
+  border-radius: 28px;
+
+  padding: 28px 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  transition: all 0.3s ease;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+}
+
+.tech-card:hover {
+
+  transform: translateY(-8px);
+
+  border-color: #00C2A8;
+
+  box-shadow: 0 20px 40px rgba(0,194,168,0.12);
+
+  position: relative;
+
+  z-index: 20;
+}
+
+
+/* ========================================
+   ICON
+======================================== */
+
+.tech-icon {
+
+  width: 75px;
+  height: 75px;
+
+  border-radius: 24px;
+
+  background: rgba(0,194,168,0.08);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 34px;
+
+  color: #00C2A8;
+
+  transition: all 0.3s ease;
+}
+
+.tech-card:hover .tech-icon {
+
+  transform: scale(1.08);
+
+  color: #0F172A;
+}
+
+
+/* ========================================
+   NAME
+======================================== */
+
+.tech-name {
+
+  margin-top: 20px;
+
+  font-size: 18px;
+  font-weight: 700;
+
+  color: #0F172A;
+
+  line-height: 1.4;
+}
+
+
+/* ========================================
+   LARGE TABLET
+======================================== */
+
+@media (max-width: 1024px) {
+
+  .tech-slider-wrapper {
+
+    padding: 12px 0;
+  }
+
+  .tech-slider-track {
+
+    gap: 18px;
+
+    animation-duration: 22s;
+
+    padding: 10px 0;
+  }
+
+  .tech-card {
+
+    width: 170px;
+
+    padding: 24px 18px;
+
+    border-radius: 24px;
+  }
+
+  .tech-icon {
+
+    width: 68px;
+    height: 68px;
+
+    border-radius: 20px;
+
+    font-size: 30px;
+  }
+
+  .tech-name {
+
+    font-size: 16px;
+  }
+
+}
+
+
+/* ========================================
+   TABLET
+======================================== */
+
+@media (max-width: 768px) {
+
+  .tech-slider-wrapper {
+
+    padding: 10px 0;
+  }
+
+  .tech-slider-track {
+
+    gap: 14px;
+
+    animation-duration: 18s;
+
+    padding: 8px 0;
+  }
+
+  .tech-card {
+
+    width: 140px;
+
+    padding: 18px 14px;
+
+    border-radius: 22px;
+  }
+
+  .tech-card:hover {
+
+    transform: translateY(-4px);
+  }
+
+  .tech-icon {
+
+    width: 60px;
+    height: 60px;
+
+    border-radius: 18px;
+
+    font-size: 26px;
+  }
+
+  .tech-name {
+
+    margin-top: 14px;
+
+    font-size: 14px;
+  }
+
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 480px) {
+
+  .tech-slider-wrapper {
+
+    padding: 8px 0;
+  }
+
+  .tech-slider-track {
+
+    gap: 10px;
+
+    animation-duration: 14s;
+
+    padding: 6px 0;
+  }
+
+  .tech-card {
+
+    width: 118px;
+
+    padding: 16px 12px;
+
+    border-radius: 18px;
+  }
+
+  .tech-card:hover {
+
+    transform: translateY(-2px);
+  }
+
+  .tech-icon {
+
+    width: 52px;
+    height: 52px;
+
+    border-radius: 16px;
+
+    font-size: 22px;
+  }
+
+  .tech-name {
+
+    margin-top: 12px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+  }
+
+}
+
+
+
+/* ========================================
+   PROJECT SLIDER
+======================================== */
+
+.project-slider-wrapper {
+
+  width: 100%;
+
+  overflow: hidden;
+
+  position: relative;
+
+  padding: 20px 0;
+}
+
+.project-slider-track {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 28px;
+
+  width: max-content;
+
+  animation: projectSlider 30s linear infinite;
+}
+
+.project-slider-track:hover {
+
+  animation-play-state: paused;
+}
+
+@keyframes projectSlider {
+
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+
+}
+
+
+/* ========================================
+   PROJECT CARD
+======================================== */
+
+/* ========================================
+   RECENT PROJECTS SHOWCASE
+======================================== */
+
+/* ========================================
+   STACK PROJECT SLIDER
+======================================== */
+
+/* ========================================
+   PROJECT STACK DESIGN
+======================================== */
+
+/* ========================================
+   PROJECT STACK SECTION
+======================================== */
+
+/* =========================================
+   STACK PROJECT SLIDER
+========================================= */
+
+/* =========================================
+   STACK PROJECT SLIDER
+========================================= */
+
+.stack-slider {
+
+  position: relative;
+
+  width: 100%;
+
+  overflow: hidden;
+
+  padding: 90px 0 110px;
+}
+
+
+/* =========================================
+   TRACK
+========================================= */
+
+.stack-track {
+
+  display: flex;
+  align-items: center;
+
+  width: max-content;
+
+  animation: infiniteStackSlider 35s linear infinite;
+}
+
+.stack-slider:hover .stack-track {
+
+  animation-play-state: paused;
+}
+
+
+/* =========================================
+   CARD
+========================================= */
+
+.stack-card {
+
+  position: relative;
+
+  flex-shrink: 0;
+
+  width: 340px;
+
+  background: #fff;
+
+  border-radius: 34px;
+
+  overflow: hidden;
+
+  margin: 0 -35px;
+
+  border: 1px solid #E2E8F0;
+
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.08);
+
+  transition: all 0.5s ease;
+
+  transform-origin: center;
+
+  text-decoration: none;
+
+  z-index: 1;
+}
+
+
+/* CENTER CARD */
+
+.center-card {
+
+  transform:
+    scale(1.12)
+    translateY(-25px);
+
+  z-index: 20;
+
+  opacity: 1;
+}
+
+
+/* LEFT CARD */
+
+.left-card {
+
+  transform:
+    rotate(-6deg)
+    scale(0.92);
+
+  opacity: 0.88;
+}
+
+
+/* RIGHT CARD */
+
+.right-card {
+
+  transform:
+    rotate(6deg)
+    scale(0.92);
+
+  opacity: 0.88;
+}
+
+
+/* HOVER */
+
+.stack-card:hover {
+
+  transform:
+    scale(1.08)
+    translateY(-14px);
+
+  z-index: 50;
+}
+
+
+/* =========================================
+   IMAGE
+========================================= */
+
+.stack-image-wrapper {
+
+  position: relative;
+
+  width: 100%;
+  height: 240px;
+
+  overflow: hidden;
+}
+
+.stack-image {
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  transition: transform 0.5s ease;
+}
+
+.stack-card:hover .stack-image {
+
+  transform: scale(1.05);
+}
+
+
+/* =========================================
+   CATEGORY TAG
+========================================= */
+
+.stack-overlay {
+
+  position: absolute;
+
+  top: 20px;
+  left: 20px;
+}
+
+.stack-category {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 10px 18px;
+
+  border-radius: 999px;
+
+  background: #00C2A8;
+
+  color: white;
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.stack-content {
+
+  padding: 28px;
+}
+
+.stack-title {
+
+  font-size: 30px;
+
+  font-weight: 800;
+
+  color: #0F172A;
+
+  line-height: 1.2;
+}
+
+.stack-description {
+
+  margin-top: 14px;
+
+  color: #64748B;
+
+  line-height: 1.7;
+
+  font-size: 15px;
+}
+
+.stack-link {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  margin-top: 20px;
+
+  color: #00C2A8;
+
+  font-weight: 700;
+
+  font-size: 15px;
+}
+
+
+/* =========================================
+   DOTS
+========================================= */
+
+.stack-dots {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 12px;
+
+  margin-top: 50px;
+}
+
+.stack-dot {
+
+  width: 13px;
+  height: 13px;
+
+  border-radius: 999px;
+
+  background: #CBD5E1;
+
+  transition: all 0.3s ease;
+}
+
+.stack-dot.active {
+
+  width: 16px;
+  height: 16px;
+
+  background: #00C2A8;
+
+  box-shadow:
+    0 0 0 6px rgba(0,194,168,0.14);
+}
+
+
+/* =========================================
+   ARROWS
+========================================= */
+
+.stack-arrow {
+
+  position: absolute;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  width: 70px;
+  height: 70px;
+
+  border-radius: 999px;
+
+  background: white;
+
+  border: 1px solid #E2E8F0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 30px;
+
+  color: #0F172A;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.08);
+
+  z-index: 50;
+}
+
+.stack-arrow-left {
+
+  left: 80px;
+}
+
+.stack-arrow-right {
+
+  right: 80px;
+}
+
+
+/* =========================================
+   INFINITE ANIMATION
+========================================= */
+
+@keyframes infiniteStackSlider {
+
+  0% {
+
+    transform: translateX(0);
+  }
+
+  100% {
+
+    transform: translateX(-50%);
+  }
+
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 1024px) {
+
+  .stack-slider {
+
+    padding: 70px 0 90px;
+  }
+
+  .stack-track {
+
+    animation-duration: 28s;
+  }
+
+  .stack-card {
+
+    width: 280px;
+
+    margin: 0 -24px;
+  }
+
+  .center-card {
+
+    transform:
+      scale(1.06)
+      translateY(-10px);
+  }
+
+  .stack-image-wrapper {
+
+    height: 200px;
+  }
+
+  .stack-title {
+
+    font-size: 24px;
+  }
+
+  .stack-arrow {
+
+    width: 55px;
+    height: 55px;
+
+    font-size: 22px;
+  }
+
+  .stack-arrow-left {
+
+    left: 25px;
+  }
+
+  .stack-arrow-right {
+
+    right: 25px;
+  }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+  .stack-slider {
+
+    padding: 40px 0 70px;
+  }
+
+  .stack-track {
+
+    gap: 16px;
+
+    animation-duration: 20s;
+  }
+
+  .stack-card {
+
+    width: 250px;
+
+    margin: 0;
+
+    border-radius: 26px;
+
+    transform: none !important;
+
+    opacity: 1 !important;
+  }
+
+  .stack-image-wrapper {
+
+    height: 170px;
+  }
+
+  .stack-content {
+
+    padding: 20px;
+  }
+
+  .stack-title {
+
+    font-size: 22px;
+  }
+
+  .stack-description {
+
+    font-size: 14px;
+  }
+
+  .stack-link {
+
+    font-size: 14px;
+  }
+
+  .stack-category {
+
+    font-size: 11px;
+
+    padding: 8px 14px;
+  }
+
+  .stack-arrow {
+
+    display: none;
+  }
+
+  .stack-dot {
+
+    width: 10px;
+    height: 10px;
+  }
+
+  .stack-dot.active {
+
+    width: 13px;
+    height: 13px;
+  }
+
+}
+
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 480px) {
+
+  .stack-track {
+
+    animation-duration: 16s;
+  }
+
+  .stack-card {
+
+    width: 220px;
+  }
+
+  .stack-image-wrapper {
+
+    height: 150px;
+  }
+
+  .stack-title {
+
+    font-size: 18px;
+  }
+
+  .stack-description {
+
+    font-size: 13px;
+  }
+
+}
+
+/* =========================================
+   TOAST ANIMATION
+========================================= */
+
+@keyframes toast {
+
+  0% {
+
+    opacity: 0;
+
+    transform: translateY(-20px) scale(0.95);
+
+  }
+
+  100% {
+
+    opacity: 1;
+
+    transform: translateY(0) scale(1);
+
+  }
+
+}
