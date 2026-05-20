@@ -1,9 +1,10 @@
 import MainLayout from "../layouts/MainLayout";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-
-import { HiArrowRight, HiPlay } from "react-icons/hi";
-
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import blogs from "../data/blogs";
+import { Link } from "react-router-dom";
 
 import {
   SiReact,
@@ -134,10 +135,10 @@ const technologiesBottom = [
 
 const Home = () => {
   const [toast, setToast] = useState({
-  show: false,
-  message: "",
-  type: "success",
-});
+    show: false,
+    message: "",
+    type: "success",
+  });
   const [showPopup, setShowPopup] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -173,135 +174,126 @@ const Home = () => {
     });
   };
 
- const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  e.preventDefault();
+    setLoading(true);
 
-  setLoading(true);
-
-  try {
-
-    const response = await fetch(
-      "http://localhost:5000/api/contact",
-      {
+    try {
+      const response = await fetch("http://localhost:5000/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-      }
-    );
+      });
 
-    const data = await response.json();
+      await response.json();
 
-    /* TOAST */
-
-    setToast({
-      show: true,
-      message: "🎉 Consultation Request Sent Successfully!",
-      type: "success",
-    });
-
-    /* RESET FORM */
-
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      service: "",
-    });
-
-    /* AUTO CLOSE POPUP */
-
-    setTimeout(() => {
-
-      setShowPopup(false);
-
-    }, 1500);
-
-    /* HIDE TOAST */
-
-    setTimeout(() => {
+      /* TOAST */
 
       setToast({
-        show: false,
-        message: "",
+        show: true,
+        message: "🎉 Consultation Request Sent Successfully!",
         type: "success",
       });
 
-    }, 4000);
+      /* RESET FORM */
 
-  } catch (error) {
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        service: "",
+      });
 
-    setToast({
-      show: true,
-      message: "❌ Something went wrong!",
-      type: "error",
-    });
+      /* AUTO CLOSE POPUP */
 
-  } finally {
+      setTimeout(() => {
+        setShowPopup(false);
+      }, 1500);
 
-    setLoading(false);
+      /* HIDE TOAST */
 
+      setTimeout(() => {
+        setToast({
+          show: false,
+          message: "",
+          type: "success",
+        });
+      }, 4000);
+    } catch {
+      setToast({
+        show: true,
+        message: "❌ Something went wrong!",
+        type: "error",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  {
+    /* =========================================
+    SERVICES DATA
+========================================= */
   }
-
-};
 
   const services = [
     {
-      tab: "SEO",
-      icon: "🚀",
-      title: "SEO Optimization",
-      desc: "Our SEO services help businesses rank higher on Google with advanced optimization and keyword strategies.",
-      points: [
-        "Higher Google Rankings",
-        "More Leads & Conversions",
-        "Long-Term Business Growth",
-      ],
-    },
-
-    {
       tab: "Web Development",
-      icon: "💻",
-      title: "Website Development",
-      desc: "We build premium modern websites that are fast, responsive, and conversion focused.",
-      points: [
-        "Modern Responsive Design",
-        "Fast Loading Speed",
-        "SEO Friendly Structure",
-      ],
+
+      title: "Modern Website Development Solutions",
+
+      link: "/web-development",
+
+      image: "/services/web-development.png",
+
+      desc: "We build fast, scalable, responsive and premium websites for startups, businesses and brands.",
+
+      points: ["Business Website", "E-Commerce Website", "Portfolio Website"],
     },
 
     {
-      tab: "Google Ads",
-      icon: "📈",
-      title: "Google Ads Marketing",
-      desc: "Generate instant leads and sales with highly optimized Google Ads campaigns.",
-      points: [
-        "High ROI Campaigns",
-        "Targeted Audience",
-        "Conversion Tracking",
-      ],
+      tab: "SEO Optimization",
+
+      title: "SEO Optimization",
+
+      link: "/digital-marketing",
+
+      image: "/services/seo.png",
+
+      desc: "Boost your search rankings and drive organic traffic with advanced SEO strategies.",
+
+      points: ["On-Page SEO", "Technical SEO", "Keyword Research"],
     },
 
     {
-      tab: "Social Media",
-      icon: "📱",
-      title: "Social Media Marketing",
-      desc: "Grow your brand and audience using engaging content and strategic marketing.",
-      points: [
-        "Instagram & Facebook Growth",
-        "Content Strategy",
-        "Audience Engagement",
-      ],
+      tab: "Graphics Designing",
+
+      title: "Creative Graphic Designing",
+
+      link: "/graphics-designing",
+
+      image: "/services/graphics.png",
+
+      desc: "Premium branding and graphic solutions for modern businesses.",
+
+      points: ["Social Media Design", "Brand Identity", "Creative Banners"],
     },
 
     {
-      tab: "AI Automation",
-      icon: "🤖",
-      title: "AI Automation",
-      desc: "Automate customer support, lead generation, and workflows using AI tools.",
-      points: ["AI Chatbots", "Workflow Automation", "Smart Lead Generation"],
+      tab: "Video Editing",
+
+      title: "Professional Video Editing",
+
+      link: "/video-editing",
+
+      image: "/services/video-editing.png",
+
+      desc: "Modern video editing solutions for brands, creators and businesses.",
+
+      points: ["Reels Editing", "YouTube Videos", "Commercial Videos"],
     },
   ];
 
@@ -312,12 +304,10 @@ const Home = () => {
     TOAST
 ========================================= */}
 
-{toast.show && (
-
-  <div className="fixed top-5 right-5 z-[99999] animate-[toast_0.4s_ease]">
-
-    <div
-      className={`
+      {toast.show && (
+        <div className="fixed top-5 right-5 z-[99999] animate-[toast_0.4s_ease]">
+          <div
+            className={`
         min-w-[320px]
         max-w-[90vw]
         rounded-2xl
@@ -335,12 +325,11 @@ const Home = () => {
             : "bg-white border-red-200"
         }
       `}
-    >
+          >
+            {/* ICON */}
 
-      {/* ICON */}
-
-      <div
-        className={`
+            <div
+              className={`
           w-12 h-12 rounded-full flex items-center justify-center text-xl
           ${
             toast.type === "success"
@@ -348,591 +337,1068 @@ const Home = () => {
               : "bg-red-100 text-red-600"
           }
         `}
-      >
+            >
+              {toast.type === "success" ? "✓" : "!"}
+            </div>
 
-        {toast.type === "success" ? "✓" : "!"}
+            {/* TEXT */}
 
-      </div>
+            <div className="flex-1">
+              <h4 className="text-lg font-bold text-dark">
+                {toast.type === "success" ? "Success" : "Error"}
+              </h4>
 
-      {/* TEXT */}
+              <p className="text-gray-600 mt-1 text-sm leading-relaxed">
+                {toast.message}
+              </p>
+            </div>
 
-      <div className="flex-1">
+            {/* CLOSE */}
 
-        <h4 className="text-lg font-bold text-dark">
+            <button
+              onClick={() =>
+                setToast({
+                  show: false,
+                  message: "",
+                  type: "success",
+                })
+              }
+              className="text-gray-400 hover:text-black text-lg"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
 
-          {toast.type === "success"
-            ? "Success"
-            : "Error"}
-
-        </h4>
-
-        <p className="text-gray-600 mt-1 text-sm leading-relaxed">
-
-          {toast.message}
-
-        </p>
-
-      </div>
-
-      {/* CLOSE */}
-
-      <button
-        onClick={() =>
-          setToast({
-            show: false,
-            message: "",
-            type: "success",
-          })
-        }
-        className="text-gray-400 hover:text-black text-lg"
-      >
-
-        ✕
-
-      </button>
-
-    </div>
-
-  </div>
-
-)}
       {/* HERO SECTION */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-white to-[#F8FAFC]">
-        {/* BACKGROUND BLUR */}
-        <div className="absolute top-0 left-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-primary/10 blur-[120px]" />
+      <section className="relative overflow-hidden bg-[#F8FBFF]">
+        {/* =========================================
+      BACKGROUND
+  ========================================= */}
 
-        <div className="container-custom relative z-10 flex items-center py-12 md:py-24">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
-            {/* LEFT CONTENT */}
-            <div className="text-center lg:text-left">
+        {/* GRID */}
+
+        <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#1D4ED8_1px,transparent_1px),linear-gradient(to_bottom,#1D4ED8_1px,transparent_1px)] bg-[size:70px_70px]" />
+
+        {/* BLUE BLUR */}
+
+        <div className="absolute top-[-180px] left-[-140px] w-[500px] h-[500px] bg-[#1D4ED8]/10 rounded-full blur-[120px]" />
+
+        {/* GREEN BLUR */}
+
+        <div className="absolute bottom-[-180px] right-[-140px] w-[450px] h-[450px] bg-[#22C55E]/10 rounded-full blur-[120px]" />
+
+        {/* =========================================
+      CONTAINER
+  ========================================= */}
+
+        <div className="container-custom relative z-10 py-16 ">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center min-h-[85vh]">
+            {/* =========================================
+          LEFT CONTENT
+      ========================================= */}
+
+            <div>
               {/* BADGE */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-medium text-sm mb-8">
-                🚀 AI Powered Digital Growth Agency
+
+              <div
+                className="
+            inline-flex
+            items-center
+            gap-3
+
+            px-5
+            py-2.5
+
+            rounded-full
+
+            border
+            border-[#DCE8FF]
+
+            bg-white
+
+            text-[#1D4ED8]
+            text-sm
+            font-semibold
+
+            shadow-sm
+
+            mb-7
+          "
+              >
+                <span className="w-2.5 h-2.5 rounded-full bg-[#22C55E]" />
+                Digital Growth Agency
               </div>
 
               {/* HEADING */}
-              <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight font-outfit text-dark">
-                Accelerate
-                <span className="text-primary"> Business Growth </span>
-                with Smart Digital Solutions
+
+              <h1 className="heading-xl max-w-[700px]">
+                Build Modern
+                <br />
+                Digital Experiences
+                <span className="block text-[#1D4ED8]">For Your Brand</span>
               </h1>
 
               {/* DESCRIPTION */}
-              <p className="paragraph mt-8 max-w-2xl mx-auto lg:mx-0 text-base md:text-lg">
-                GrowthGarage helps startups and businesses scale with premium
-                web development, AI automation, branding, SEO, and modern
-                digital experiences.
+
+              <p className="paragraph max-w-xl mt-7">
+                EverGrow Digital helps startups and businesses grow with premium
+                websites, branding, SEO, social media marketing and modern
+                digital solutions built for real business growth.
               </p>
 
               {/* BUTTONS */}
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mt-10">
-                <button className="gradient-btn w-full sm:w-auto flex items-center justify-center gap-2">
-                  Get Free Consultation
-                  <HiArrowRight className="text-xl" />
+
+              <div className="flex flex-col sm:flex-row gap-4 mt-10">
+                {/* PRIMARY BUTTON */}
+
+                <button
+                  className="
+              h-[56px]
+              px-8
+
+              rounded-full
+
+              bg-[#1D4ED8]
+
+              text-white
+              font-semibold
+
+              hover:bg-[#1840C4]
+
+              transition-all
+              duration-300
+            "
+                >
+                  Get Started
                 </button>
 
-                <button className="outline-btn w-full sm:w-auto flex items-center justify-center gap-2">
-                  <HiPlay className="text-xl" />
+                {/* SECONDARY BUTTON */}
+
+                <button
+                  className="
+              h-[56px]
+              px-8
+
+              rounded-full
+
+              border
+              border-[#DCE8FF]
+
+              bg-white
+
+              text-[#071120]
+              font-semibold
+
+              hover:border-[#1D4ED8]
+              hover:text-[#1D4ED8]
+
+              transition-all
+              duration-300
+            "
+                >
                   View Portfolio
                 </button>
               </div>
+
               {/* STATS */}
-              <div className="grid grid-cols-3 gap-3 md:gap-6 mt-10 md:mt-14">
+
+              <div className="flex flex-wrap gap-10 mt-14">
                 <div>
-                  <h3 className="text-3xl md:text-4xl font-bold text-primary animate-pulse">
-                    250+
+                  <h3 className="text-[32px] font-black text-[#1D4ED8]">
+                    120+
                   </h3>
 
-                  <p className="text-gray-500 mt-2 text-sm md:text-base">
-                    Projects
-                  </p>
+                  <p className="small-text">Projects Completed</p>
                 </div>
 
                 <div>
-                  <h3 className="text-3xl md:text-4xl font-bold text-primary animate-pulse">
-                    98%
-                  </h3>
+                  <h3 className="text-[32px] font-black text-[#22C55E]">98%</h3>
 
-                  <p className="text-gray-500 mt-2 text-sm md:text-base">
-                    Client Satisfaction
-                  </p>
+                  <p className="small-text">Client Satisfaction</p>
                 </div>
 
                 <div>
-                  <h3 className="text-3xl md:text-4xl font-bold text-primary animate-pulse">
-                    5+
-                  </h3>
+                  <h3 className="text-[32px] font-black text-[#1D4ED8]">5+</h3>
 
-                  <p className="text-gray-500 mt-2 text-sm md:text-base">
-                    Years Experience
-                  </p>
+                  <p className="small-text">Years Experience</p>
                 </div>
               </div>
             </div>
 
-            {/* RIGHT SIDE */}
-            <div className="relative flex justify-center mt-10 lg:mt-0">
-              {" "}
+            {/* =========================================
+          RIGHT CONTENT
+      ========================================= */}
+
+            <div className="relative flex justify-center">
               {/* MAIN CARD */}
-              <div className="relative w-full max-w-[550px]">
-                {/* GLOW */}
-                <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full" />
 
-                {/* DASHBOARD CARD */}
-                <div className="relative glass rounded-[32px] p-5 md:p-8 border border-white/20">
-                  {/* TOP */}
-                  <div className="flex items-center justify-between mb-8">
-                    <div>
-                      <p className="text-gray-500 text-sm">Revenue Growth</p>
+              <div
+                className="
+            relative
 
-                      <h3 className="text-3xl md:text-4xl font-bold mt-2 text-dark">
-                        +245%
-                      </h3>
-                    </div>
+            w-full
+            max-w-[720px]
 
-                    <div className="w-16 h-16 rounded-2xl bg-primary text-white flex items-center justify-center text-3xl shadow-lg">
-                      📈
-                    </div>
-                  </div>
+            rounded-[32px]
 
-                  {/* CHART */}
-                  <div className="space-y-5">
-                    <div>
-                      <div className="flex items-center justify-between text-sm mb-2">
-                        <span>SEO Growth</span>
-                        <span>92%</span>
-                      </div>
+            border
+            border-[#EAF2FF]
 
-                      <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
-                        <div className="w-[92%] h-full bg-primary rounded-full animate-pulse" />
-                      </div>
-                    </div>
+            bg-white
 
-                    <div>
-                      <div className="flex items-center justify-between text-sm mb-2">
-                        <span>AI Automation</span>
-                        <span>85%</span>
-                      </div>
+            shadow-[0_20px_60px_rgba(15,23,42,0.08)]
 
-                      <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
-                        <div className="w-[85%] h-full bg-accent rounded-full animate-pulse" />
-                      </div>
-                    </div>
+            overflow-hidden
+          "
+              >
+                {/* TOP BAR */}
 
-                    <div>
-                      <div className="flex items-center justify-between text-sm mb-2">
-                        <span>Web Performance</span>
-                        <span>97%</span>
-                      </div>
+                <div className="flex items-center gap-2 px-6 pt-5">
+                  <span className="w-3 h-3 rounded-full bg-red-400" />
 
-                      <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
-                        <div className="w-[97%] h-full bg-dark rounded-full animate-pulse" />
-                      </div>
-                    </div>
-                  </div>
+                  <span className="w-3 h-3 rounded-full bg-yellow-400" />
 
-                  {/* BOTTOM CARDS */}
-                  <div className="grid grid-cols-2 gap-4 mt-8">
-                    <div className="bg-white rounded-2xl p-4 shadow-soft">
-                      <h4 className="text-gray-500 text-sm">Active Clients</h4>
+                  <span className="w-3 h-3 rounded-full bg-green-400" />
+                </div>
 
-                      <p className="text-2xl font-bold mt-2">120+</p>
-                    </div>
+                {/* ANIMATION */}
 
-                    <div className="bg-white rounded-2xl p-4 shadow-soft">
-                      <h4 className="text-gray-500 text-sm">ROI Increase</h4>
+                <div className="p-4 md:p-8">
+                  <DotLottieReact
+                    src="https://lottie.host/eb2b3892-af76-4259-92dc-c99edcee7248/LYHbcVObNa.lottie"
+                    loop
+                    autoplay
+                  />
+                </div>
+              </div>
 
-                      <p className="text-2xl font-bold mt-2 text-primary">
-                        3.8x
-                      </p>
-                    </div>
-                  </div>
+              {/* FLOATING CARD */}
+
+              <div
+                className="
+            hidden
+            lg:flex
+
+            absolute
+            -bottom-8
+            -left-8
+
+            items-center
+            gap-4
+
+            px-5
+            py-4
+
+            rounded-[22px]
+
+            bg-white
+
+            border
+            border-[#EAF2FF]
+
+            shadow-[0_15px_40px_rgba(15,23,42,0.08)]
+          "
+              >
+                <div
+                  className="
+              w-14
+              h-14
+
+              rounded-2xl
+
+              bg-[#EEF4FF]
+
+              flex
+              items-center
+              justify-center
+
+              text-2xl
+            "
+                >
+                  📈
+                </div>
+
+                <div>
+                  <h3 className="text-[26px] font-black text-[#071120]">
+                    +245%
+                  </h3>
+
+                  <p className="small-text">Revenue Growth</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </section>
-      {/* =========================================
-   INFINITE CLIENT SLIDER
-========================================= */}
-      <section className="py-14 md:py-20 bg-white border-y border-gray-200 overflow-hidden">
-        {/* TOP */}
-        <div className="container-custom text-center mb-10 md:mb-14">
-          <p className="text-primary font-semibold uppercase tracking-[3px] md:tracking-[5px] text-xs md:text-sm">
-            Trusted By Brands
-          </p>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-outfit text-dark mt-3 md:mt-4 leading-tight">
-            Agencies & Brands
-            <br className="sm:hidden" />
+      {/* =========================================
+    Brands & Agencies
+========================================= */}
+      <section className="relative py-16 md:py-24 overflow-hidden bg-white">
+        {/* SOFT BACKGROUND */}
+
+        <div className="absolute inset-0 bg-[#F8FBFF]" />
+
+        {/* LIGHT GRID */}
+
+        <div className="absolute inset-0 opacity-[0.025] bg-[linear-gradient(to_right,#1D4ED8_1px,transparent_1px),linear-gradient(to_bottom,#1D4ED8_1px,transparent_1px)] bg-[size:72px_72px]" />
+
+        {/* GLOW */}
+
+        <div className="absolute top-[-120px] left-[10%] w-[280px] h-[280px] bg-[#1D4ED8]/10 rounded-full blur-[100px]" />
+
+        <div className="absolute bottom-[-120px] right-[10%] w-[280px] h-[280px] bg-[#22C55E]/10 rounded-full blur-[100px]" />
+
+        {/* =========================================
+      TOP CONTENT
+  ========================================= */}
+
+        <div className="container-custom relative z-10 text-center mb-12 md:mb-16">
+          {/* BADGE */}
+
+          <div
+            className="
+        inline-flex
+        items-center
+        gap-2
+
+        px-5
+        py-2.5
+
+        rounded-full
+
+        bg-white
+
+        border
+        border-[#E4EEFF]
+
+        text-[#1D4ED8]
+        text-sm
+        font-semibold
+
+        shadow-sm
+      "
+          >
+            <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
+            Trusted By Brands
+          </div>
+
+          {/* HEADING */}
+
+          <h2
+            className="
+        mt-6
+
+        text-[34px]
+        sm:text-[44px]
+        lg:text-[56px]
+
+        font-black
+
+        leading-[1.05]
+
+        tracking-[-2px]
+
+        text-[#071120]
+      "
+          >
+            Brands &<span className="text-[#1D4ED8]"> Agencies</span>
+            <br />
             We Worked With
           </h2>
+
+          {/* TEXT */}
+
+          <p
+            className="
+        mt-5
+
+        max-w-2xl
+        mx-auto
+
+        text-[16px]
+        md:text-[18px]
+
+        leading-[1.8]
+
+        text-slate-600
+      "
+          >
+            Helping startups, agencies and businesses grow with modern digital
+            experiences and scalable marketing solutions.
+          </p>
         </div>
 
-        {/* SLIDER */}
-        <div className="slider-wrapper">
-          <div className="slider-track">
+        {/* =========================================
+      CLIENT LOGO SLIDER
+  ========================================= */}
+
+        <div className="relative z-10 overflow-hidden">
+          <div className="client-slider-track">
             {[
-              {
-                name: "DigiDir",
-                link: "https://digidir.com",
-              },
+              "/clients/rankwrap.png",
 
-              {
-                name: "Sagus Solutions",
-                link: "https://sagussolutions.com",
-              },
+              "/clients/dhalls.png",
 
-              {
-                name: "TechNova",
-                link: "#",
-              },
+              "/clients/careerbrainmap.png",
 
-              {
-                name: "PixelCraft",
-                link: "#",
-              },
+              "/clients/ikkis.png",
 
-              {
-                name: "Growthify",
-                link: "#",
-              },
+              "/clients/kidzee.png",
 
-              {
-                name: "VisionX Media",
-                link: "#",
-              },
+              "/clients/ajjars.png",
 
-              {
-                name: "WebNest",
-                link: "#",
-              },
+              "/clients/webnest.png",
 
-              {
-                name: "BrandScale",
-                link: "#",
-              },
+              "/clients/brandscale.png",
 
               /* DUPLICATE */
 
-              {
-                name: "DigiDir",
-                link: "https://digidir.com",
-              },
+              "/clients/rankwrap.png",
 
-              {
-                name: "Sagus Solutions",
-                link: "https://sagussolutions.com",
-              },
+              "/clients/dhalls.png",
 
-              {
-                name: "TechNova",
-                link: "#",
-              },
+              "/clients/careerbrainmap.png",
 
-              {
-                name: "PixelCraft",
-                link: "#",
-              },
+              "/clients/ikkis.png",
 
-              {
-                name: "Growthify",
-                link: "#",
-              },
+              "/clients/kidzee.png",
 
-              {
-                name: "VisionX Media",
-                link: "#",
-              },
+              "/clients/ajjars.png",
 
-              {
-                name: "WebNest",
-                link: "#",
-              },
+              "/clients/webnest.png",
 
-              {
-                name: "BrandScale",
-                link: "#",
-              },
-            ].map((item, index) => (
-              <a
+              "/clients/brandscale.png",
+            ].map((logo, index) => (
+              <div
                 key={index}
-                href={item.link}
-                target="_blank"
-                rel="noreferrer"
                 className="
+            client-logo-card
+
             flex-shrink-0
-
-            min-w-[120px]
-            sm:min-w-[150px]
-            md:min-w-[190px]
-            lg:min-w-[220px]
-
-            h-[58px]
-            sm:h-[70px]
-            md:h-[85px]
-            lg:h-[100px]
-
-            px-4
-            sm:px-5
-            md:px-6
-            lg:px-8
-
-            mr-3
-            sm:mr-4
-            md:mr-5
-            lg:mr-6
 
             flex
             items-center
             justify-center
 
-            rounded-2xl
-            md:rounded-3xl
-
             bg-white
 
-            border-2
-            border-gray-200
+            border
+            border-[#EAF2FF]
 
-            shadow-sm
-            md:shadow-lg
-
-            text-[13px]
-            sm:text-sm
-            md:text-base
-            lg:text-xl
-
-            font-semibold
-            lg:font-bold
-
-            text-dark
-
-            whitespace-nowrap
+            rounded-[24px]
 
             transition-all
             duration-300
 
             hover:-translate-y-1
-            md:hover:-translate-y-2
 
-            hover:border-primary
+            hover:shadow-[0_15px_40px_rgba(15,23,42,0.06)]
 
-            hover:text-primary
-
-            hover:bg-white
+            hover:border-[#D7E7FF]
           "
               >
-                {item.name}
-              </a>
+                <img
+                  src={logo}
+                  alt="client-logo"
+                  className="
+              max-w-[120px]
+              md:max-w-[150px]
+
+              max-h-[36px]
+              md:max-h-[42px]
+
+              object-contain
+
+              opacity-80
+
+              hover:opacity-100
+
+              transition-all
+              duration-300
+            "
+                />
+              </div>
             ))}
           </div>
         </div>
       </section>
-      {/* =========================================
-   WHY CHOOSE US - PREMIUM LAYOUT
-========================================= */}
 
-      <section className="py-16 md:py-24 bg-[#F8FAFC] overflow-hidden">
-        <div className="container-custom">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            {/* LEFT CONTENT */}
+      {/* =========================================
+    WHY CHOOSE US
+========================================= */}
+      <section className="relative py-20 lg:py-28 overflow-hidden bg-white">
+        {/* BACKGROUND */}
+
+        <div className="absolute inset-0 bg-[#F8FBFF]" />
+
+        {/* GRID */}
+
+        <div className="absolute inset-0 opacity-[0.025] bg-[linear-gradient(to_right,#1D4ED8_1px,transparent_1px),linear-gradient(to_bottom,#1D4ED8_1px,transparent_1px)] bg-[size:72px_72px]" />
+
+        {/* BLUR */}
+
+        <div className="absolute top-[-120px] left-[-80px] w-[320px] h-[320px] bg-[#1D4ED8]/10 rounded-full blur-[100px]" />
+
+        <div className="absolute bottom-[-120px] right-[-80px] w-[320px] h-[320px] bg-[#22C55E]/10 rounded-full blur-[100px]" />
+
+        {/* CONTAINER */}
+
+        <div className="container-custom relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 items-center">
+            {/* =========================================
+          LEFT CONTENT
+      ========================================= */}
+
             <motion.div
-              initial={{ opacity: 0, x: -80 }}
+              initial={{ opacity: 0, x: -60 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7 }}
               viewport={{ once: true }}
             >
-              <p className="text-primary font-semibold uppercase tracking-[4px] text-sm">
-                Why Choose Us
-              </p>
+              {/* TAG */}
 
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-outfit text-dark mt-4 leading-tight">
-                A Digital Agency That Helps You Grow
+              <div
+                className="
+            inline-flex
+            items-center
+            gap-2
+
+            px-5
+            py-2.5
+
+            rounded-full
+
+            bg-white
+
+            border
+            border-[#DCE8FF]
+
+            text-[#1D4ED8]
+            text-sm
+            font-semibold
+
+            shadow-sm
+
+            mb-7
+          "
+              >
+                <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
+                Why Choose EverGrow
+              </div>
+
+              {/* HEADING */}
+
+              <h2 className="heading-lg max-w-[650px]">
+                A Digital Partner
+                <br />
+                Focused On
+                <span className="text-[#1D4ED8]"> Real Growth</span>
               </h2>
 
-              <p className="paragraph mt-8 text-base md:text-lg leading-relaxed">
-                At GrowthGarage, we specialize in helping startups and
-                businesses scale with modern digital solutions. Whether you need
-                a high-converting website, AI automation, or powerful marketing
-                strategies, our team focuses on delivering measurable results.
+              {/* DESCRIPTION */}
+
+              <p className="paragraph mt-7 max-w-xl">
+                EverGrow Digital helps businesses scale with premium websites,
+                branding, SEO, marketing and modern digital experiences built
+                for long-term business growth and visibility.
               </p>
 
-              <p className="paragraph mt-6 text-base md:text-lg leading-relaxed">
-                From branding and SEO to UI/UX design and social media growth,
-                we build experiences that improve visibility, engagement, and
-                conversions. Our mission is simple — help your business grow
-                faster.
+              <p className="paragraph mt-5 max-w-xl">
+                We focus on strategy, performance and clean execution to help
+                brands build trust, increase conversions and grow faster online.
               </p>
 
               {/* BUTTONS */}
-              <div className="flex flex-col sm:flex-row gap-4 mt-10">
-                <button className="gradient-btn">Get Free Consultation</button>
 
-                <button className="outline-btn">View Services</button>
+              <div className="flex flex-col sm:flex-row gap-4 mt-10">
+                {/* BUTTON */}
+
+                <button
+                  className="
+              h-[56px]
+              px-8
+
+              rounded-full
+
+              bg-[#1D4ED8]
+
+              text-white
+              font-semibold
+
+              hover:bg-[#1840C4]
+
+              transition-all
+              duration-300
+            "
+                >
+                  Get Free Consultation
+                </button>
+
+                {/* BUTTON */}
+
+                <button
+                  className="
+              h-[56px]
+              px-8
+
+              rounded-full
+
+              border
+              border-[#DCE8FF]
+
+              bg-white
+
+              text-[#071120]
+              font-semibold
+
+              hover:border-[#1D4ED8]
+              hover:text-[#1D4ED8]
+
+              transition-all
+              duration-300
+            "
+                >
+                  View Services
+                </button>
               </div>
             </motion.div>
 
-            {/* RIGHT CARDS */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {/* CARD 1 */}
-              <motion.div
-                initial={{ opacity: 0, y: 80 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                viewport={{ once: true }}
-                className="bg-white rounded-3xl p-6 md:p-8 shadow-lg border border-gray-100 hover:border-primary hover:-translate-y-2 transition-all duration-300"
-              >
-                <div className="w-16 h-16 rounded-full bg-primary/10 text-primary flex items-center justify-center text-3xl mb-6">
-                  🚀
-                </div>
+            {/* =========================================
+          RIGHT CARDS
+      ========================================= */}
 
-                <h3 className="text-2xl font-bold text-dark leading-snug">
-                  Corporate Branding Solutions
-                </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              {/* CARD */}
 
-                <p className="paragraph mt-5">
-                  Premium branding strategies designed to elevate your business
-                  identity and online presence.
-                </p>
-              </motion.div>
+              {[
+                {
+                  title: "Brand Strategy",
+                  image: "/services/branding.png",
+                  desc: "Modern branding solutions designed to improve business identity and online visibility.",
+                },
 
-              {/* CARD 2 */}
-              <motion.div
-                initial={{ opacity: 0, y: 120 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                viewport={{ once: true }}
-                className="bg-white rounded-3xl p-6 md:p-8 shadow-lg border border-gray-100 hover:border-primary hover:-translate-y-2 transition-all duration-300 sm:mt-14"
-              >
-                <div className="w-16 h-16 rounded-full bg-pink-100 text-pink-500 flex items-center justify-center text-3xl mb-6">
-                  💻
-                </div>
+                {
+                  title: "Web Development",
+                  image: "/services/web-development.png",
+                  desc: "High-performing responsive websites built for speed, engagement and conversions.",
+                },
 
-                <h3 className="text-2xl font-bold text-dark leading-snug">
-                  Website Design & Development
-                </h3>
+                {
+                  title: "Digital Marketing",
+                  image: "/services/digital-marketing.png",
+                  desc: "SEO and marketing strategies focused on traffic, growth and measurable results.",
+                },
 
-                <p className="paragraph mt-5">
-                  Modern responsive websites crafted for speed, user experience,
-                  and higher conversions.
-                </p>
-              </motion.div>
+                {
+                  title: "Creative Design",
+                  image: "/services/creative-design.png",
+                  desc: "Clean UI/UX experiences crafted to improve user interaction and brand value.",
+                },
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 60 }}
+                  whileInView={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  transition={{
+                    duration: 0.5,
+                    delay: index * 0.1,
+                  }}
+                  viewport={{ once: true }}
+                  className={`
+      bg-white
 
-              {/* CARD 3 */}
-              <motion.div
-                initial={{ opacity: 0, y: 120 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                viewport={{ once: true }}
-                className="bg-white rounded-3xl p-6 md:p-8 shadow-lg border border-gray-100 hover:border-primary hover:-translate-y-2 transition-all duration-300"
-              >
-                <div className="w-16 h-16 rounded-full bg-yellow-100 text-yellow-500 flex items-center justify-center text-3xl mb-6">
-                  📈
-                </div>
+      rounded-[28px]
 
-                <h3 className="text-2xl font-bold text-dark leading-snug">
-                  Social Media Marketing
-                </h3>
+      border
+      border-[#EAF2FF]
 
-                <p className="paragraph mt-5">
-                  Powerful digital marketing campaigns focused on engagement,
-                  reach, and ROI growth.
-                </p>
-              </motion.div>
+      p-7
+      md:p-8
 
-              {/* CARD 4 */}
-              <motion.div
-                initial={{ opacity: 0, y: 80 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                viewport={{ once: true }}
-                className="bg-white rounded-3xl p-6 md:p-8 shadow-lg border border-gray-100 hover:border-primary hover:-translate-y-2 transition-all duration-300 sm:mt-14"
-              >
-                <div className="w-16 h-16 rounded-full bg-cyan-100 text-cyan-500 flex items-center justify-center text-3xl mb-6">
-                  🎨
-                </div>
+      shadow-[0_15px_40px_rgba(15,23,42,0.05)]
 
-                <h3 className="text-2xl font-bold text-dark leading-snug">
-                  Creative UI/UX Designing
-                </h3>
+      hover:-translate-y-1
+      hover:border-[#D7E7FF]
 
-                <p className="paragraph mt-5">
-                  Beautiful user experiences that improve interaction,
-                  retention, and customer satisfaction.
-                </p>
-              </motion.div>
+      transition-all
+      duration-300
+
+      ${index === 1 || index === 3 ? "sm:mt-10" : ""}
+    `}
+                >
+                  {/* IMAGE */}
+
+                  <div
+                    className="
+        w-16
+        h-16
+
+        rounded-2xl
+
+        bg-[#F4F8FF]
+
+        border
+        border-[#E4EEFF]
+
+        flex
+        items-center
+        justify-center
+
+        overflow-hidden
+
+        mb-6
+      "
+                  >
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="
+          w-8
+          h-8
+
+          object-contain
+        "
+                    />
+                  </div>
+
+                  {/* TITLE */}
+
+                  <h3 className="text-[26px] font-bold text-[#071120] leading-[1.2]">
+                    {item.title}
+                  </h3>
+
+                  {/* DESC */}
+
+                  <p className="paragraph mt-5">{item.desc}</p>
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>
       </section>
-      {/* =========================================
-   SERVICES SECTION
-========================================= */}
 
-      <section className="py-16 md:py-24 bg-white overflow-hidden">
-        <div className="container-custom">
-          {/* TABS */}
-          <div className="flex flex-wrap justify-center gap-4 md:gap-8 border-b border-gray-200 pb-5">
+      {/* =========================================
+    SERVICES SECTION
+========================================= */}
+      <section className="relative py-20 lg:py-28 overflow-hidden bg-white">
+        {/* BACKGROUND */}
+
+        <div className="absolute inset-0 bg-[#F8FBFF]" />
+
+        {/* GRID */}
+
+        <div className="absolute inset-0 opacity-[0.025] bg-[linear-gradient(to_right,#1D4ED8_1px,transparent_1px),linear-gradient(to_bottom,#1D4ED8_1px,transparent_1px)] bg-[size:72px_72px]" />
+
+        {/* BLUR */}
+
+        <div className="absolute top-[-120px] left-[-80px] w-[320px] h-[320px] bg-[#1D4ED8]/10 rounded-full blur-[100px]" />
+
+        <div className="absolute bottom-[-120px] right-[-80px] w-[320px] h-[320px] bg-[#22C55E]/10 rounded-full blur-[100px]" />
+
+        {/* CONTAINER */}
+
+        <div className="container-custom relative z-10">
+          {/* =========================================
+        TOP
+    ========================================= */}
+
+          <div className="max-w-3xl mx-auto text-center">
+            {/* BADGE */}
+
+            <div
+              className="
+          inline-flex
+          items-center
+          gap-2
+
+          px-5
+          py-2.5
+
+          rounded-full
+
+          bg-white
+
+          border
+          border-[#DCE8FF]
+
+          text-[#1D4ED8]
+          text-sm
+          font-semibold
+
+          shadow-sm
+        "
+            >
+              <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
+              Our Services
+            </div>
+
+            {/* HEADING */}
+
+            <h2 className="heading-lg mt-7">
+              Smart Digital Solutions
+              <span className="block text-[#1D4ED8]">Designed For Growth</span>
+            </h2>
+
+            {/* TEXT */}
+
+            <p className="paragraph max-w-2xl mx-auto mt-6">
+              We help startups and businesses grow with premium websites, SEO
+              optimization, branding, AI automation and modern digital
+              experiences.
+            </p>
+          </div>
+
+          {/* =========================================
+        TABS
+    ========================================= */}
+
+          <div className="flex flex-wrap justify-center gap-3 md:gap-5 mt-14">
             {services.map((service, index) => (
               <button
                 key={index}
-                onClick={() => setActiveTab(index)}
-                className={`pb-2 text-sm md:text-lg font-semibold transition-all duration-300 border-b-2 ${
-                  activeTab === index
-                    ? "text-primary border-primary"
-                    : "text-dark border-transparent hover:text-primary"
-                }`}
+                onClick={() => {
+                  setActiveTab(index);
+                }}
+                className={`
+            px-5
+            md:px-6
+
+            h-[52px]
+
+            rounded-full
+
+            text-sm
+            md:text-[15px]
+
+            font-semibold
+
+            transition-all
+            duration-300
+
+            ${
+              activeTab === index
+                ? "bg-[#1D4ED8] text-white shadow-[0_10px_30px_rgba(29,78,216,0.18)]"
+                : "bg-white border border-[#E4EEFF] text-[#071120] hover:border-[#1D4ED8] hover:text-[#1D4ED8]"
+            }
+          `}
               >
                 {service.tab}
               </button>
             ))}
           </div>
 
-          {/* CONTENT */}
+          {/* =========================================
+        CONTENT
+    ========================================= */}
+
           <motion.div
             key={activeTab}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center mt-16"
+            initial={{
+              opacity: 0,
+              y: 30,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+            }}
+            transition={{
+              duration: 0.4,
+            }}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 items-center mt-16"
           >
-            {/* LEFT */}
+            {/* =========================================
+          LEFT
+      ========================================= */}
+
             <div className="flex justify-center">
-              <div className="relative w-full max-w-[500px] aspect-square rounded-[40px] bg-gradient-to-br from-primary/10 to-cyan-100 border border-primary/20 shadow-2xl flex items-center justify-center">
-                <div className="text-[90px] sm:text-[120px] md:text-[170px]">
-                  {services[activeTab].icon}
+              <div
+                className="
+      group
+
+      relative
+
+      w-full
+      max-w-[580px]
+
+      h-[420px]
+      md:h-[520px]
+
+      rounded-[32px]
+
+      border
+      border-[#EAF2FF]
+
+      bg-white
+
+      shadow-[0_20px_60px_rgba(15,23,42,0.08)]
+
+      overflow-hidden
+
+      transition-all
+      duration-500
+
+      hover:-translate-y-2
+      hover:shadow-[0_30px_80px_rgba(15,23,42,0.12)]
+    "
+              >
+                {/* TOP BAR */}
+
+                <div className="flex items-center gap-2 px-6 pt-5">
+                  <span className="w-3 h-3 rounded-full bg-red-400" />
+
+                  <span className="w-3 h-3 rounded-full bg-yellow-400" />
+
+                  <span className="w-3 h-3 rounded-full bg-green-400" />
+                </div>
+
+                {/* IMAGE PLACEHOLDER */}
+
+                <div
+                  className="
+        absolute
+        inset-0
+
+        flex
+        items-center
+        justify-center
+
+        p-8
+      "
+                >
+                  {/* BACKGROUND */}
+
+                  <div
+                    className="
+          absolute
+          inset-0
+
+          opacity-[0.03]
+
+          bg-[linear-gradient(to_right,#1D4ED8_1px,transparent_1px),linear-gradient(to_bottom,#1D4ED8_1px,transparent_1px)]
+
+          bg-[size:40px_40px]
+        "
+                  />
+
+                  {/* IMAGE */}
+
+                  <img
+                    src={services[activeTab].image}
+                    alt={services[activeTab].title}
+                    className="
+          relative
+          z-10
+
+          w-full
+          h-full
+
+          object-contain
+
+          transition-all
+          duration-700
+
+          group-hover:scale-[1.03]
+        "
+                  />
                 </div>
               </div>
             </div>
 
-            {/* RIGHT */}
+            {/* =========================================
+          RIGHT
+      ========================================= */}
+
             <div>
-              <h3 className="text-3xl md:text-5xl font-bold font-outfit text-dark">
+              {/* TITLE */}
+
+              <h3 className="text-[34px] md:text-[48px] font-black leading-[1.1] text-[#071120]">
                 {services[activeTab].title}
               </h3>
 
-              <p className="paragraph mt-8 text-base md:text-lg leading-relaxed">
-                {services[activeTab].desc}
-              </p>
+              {/* DESC */}
+
+              <p className="paragraph mt-7">{services[activeTab].desc}</p>
 
               {/* POINTS */}
-              <div className="space-y-8 mt-10">
+
+              <div className="space-y-6 mt-10">
                 {services[activeTab].points.map((point, index) => (
-                  <div key={index} className="flex gap-5">
-                    <div className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center flex-shrink-0">
+                  <div
+                    key={index}
+                    className="
+                  group
+
+                  flex
+                  gap-5
+
+                  p-5
+
+                  rounded-[24px]
+
+                  bg-white
+
+                  border
+                  border-[#EAF2FF]
+
+                  shadow-[0_10px_30px_rgba(15,23,42,0.04)]
+
+                  hover:border-[#D7E7FF]
+                  hover:-translate-y-1
+
+                  transition-all
+                  duration-300
+                "
+                  >
+                    {/* ICON */}
+
+                    <div
+                      className="
+                    w-14
+                    h-14
+
+                    rounded-2xl
+
+                    bg-[#EEF4FF]
+
+                    border
+                    border-[#DCE8FF]
+
+                    flex
+                    items-center
+                    justify-center
+
+                    flex-shrink-0
+
+                    text-[#1D4ED8]
+                    text-xl
+                    font-bold
+
+                    transition-all
+                    duration-300
+
+                    group-hover:bg-[#1D4ED8]
+                    group-hover:text-white
+                  "
+                    >
                       ✓
                     </div>
 
+                    {/* TEXT */}
+
                     <div>
-                      <h4 className="text-xl md:text-2xl font-bold text-dark">
+                      <h4 className="text-[22px] font-bold text-[#071120]">
                         {point}
                       </h4>
 
                       <p className="paragraph mt-2">
                         Premium solutions designed to help your business grow
-                        faster and smarter.
+                        faster with modern strategies and technologies.
                       </p>
                     </div>
                   </div>
@@ -940,8 +1406,33 @@ const Home = () => {
               </div>
 
               {/* BUTTON */}
-              <div className="mt-12">
-                <button className="gradient-btn">Explore Services</button>
+
+              <div className="mt-10">
+                <Link
+                  to={services[activeTab].link}
+                  className="
+              inline-flex
+              items-center
+              justify-center
+
+              h-[56px]
+              px-8
+
+              rounded-full
+
+              bg-[#1D4ED8]
+
+              text-white
+              font-semibold
+
+              hover:bg-[#1840C4]
+
+              transition-all
+              duration-300
+            "
+                >
+                  Explore Services
+                </Link>
               </div>
             </div>
           </motion.div>
@@ -949,11 +1440,30 @@ const Home = () => {
       </section>
 
       {/* =========================================
-   PROCESS SECTION
+    PROCESS SECTION
 ========================================= */}
-      <section className="py-16 md:py-24 bg-[#F8FAFC] overflow-hidden">
-        <div className="container-custom">
-          {/* TOP */}
+      <section className="relative py-20 lg:py-28 overflow-hidden bg-white">
+        {/* BACKGROUND */}
+
+        <div className="absolute inset-0 bg-[#F8FBFF]" />
+
+        {/* GRID */}
+
+        <div className="absolute inset-0 opacity-[0.025] bg-[linear-gradient(to_right,#1D4ED8_1px,transparent_1px),linear-gradient(to_bottom,#1D4ED8_1px,transparent_1px)] bg-[size:72px_72px]" />
+
+        {/* BLUR */}
+
+        <div className="absolute top-[-120px] left-[-80px] w-[320px] h-[320px] bg-[#1D4ED8]/10 rounded-full blur-[100px]" />
+
+        <div className="absolute bottom-[-120px] right-[-80px] w-[320px] h-[320px] bg-[#22C55E]/10 rounded-full blur-[100px]" />
+
+        {/* CONTAINER */}
+
+        <div className="container-custom relative z-10">
+          {/* =========================================
+        TOP
+    ========================================= */}
+
           <motion.div
             initial={{ opacity: 0, y: 60 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -961,296 +1471,474 @@ const Home = () => {
             viewport={{ once: true }}
             className="text-center max-w-3xl mx-auto"
           >
-            <p className="text-primary font-semibold uppercase tracking-[4px] text-sm">
-              Our Process
-            </p>
+            {/* BADGE */}
 
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-outfit text-dark mt-4 leading-tight">
-              Simple Process, Powerful Results
+            <div
+              className="
+          inline-flex
+          items-center
+          gap-2
+
+          px-5
+          py-2.5
+
+          rounded-full
+
+          bg-white
+
+          border
+          border-[#DCE8FF]
+
+          text-[#1D4ED8]
+          text-sm
+          font-semibold
+
+          shadow-sm
+        "
+            >
+              <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
+              Our Process
+            </div>
+
+            {/* HEADING */}
+
+            <h2 className="heading-lg mt-7">
+              Simple Process
+              <span className="block text-[#1D4ED8]">Powerful Results</span>
             </h2>
 
-            <p className="paragraph mt-6 text-base md:text-lg">
-              We follow a streamlined workflow to ensure every project delivers
-              maximum growth, performance, and user experience.
+            {/* TEXT */}
+
+            <p className="paragraph mt-6 max-w-2xl mx-auto">
+              We follow a streamlined workflow to create premium digital
+              experiences focused on business growth, performance and long-term
+              success.
             </p>
           </motion.div>
 
-          {/* STEPS */}
-          <div className="relative mt-16">
+          {/* =========================================
+        STEPS
+    ========================================= */}
+
+          <div className="relative mt-20">
             {/* LINE */}
-            <div className="hidden lg:block absolute top-24 left-0 w-full h-[2px] bg-gradient-to-r from-primary/20 via-primary to-primary/20" />
+
+            <div className="hidden lg:block absolute top-12 left-0 w-full h-[2px] bg-gradient-to-r from-[#DCE8FF] via-[#1D4ED8] to-[#DCE8FF]" />
+
+            {/* GRID */}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              {/* STEP 1 */}
-              <motion.div
-                initial={{ opacity: 0, y: 80 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                viewport={{ once: true }}
-                className="relative bg-white rounded-3xl p-8 border border-gray-200 hover:border-primary transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
-              >
-                {/* NUMBER */}
-                <div className="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center text-2xl font-bold mx-auto shadow-lg">
-                  01
-                </div>
+              {[
+                {
+                  number: "01",
+                  title: "Discovery",
+                  desc: "Understanding your business goals, audience and project requirements.",
+                },
 
-                <div className="text-center mt-8">
-                  <h3 className="text-2xl font-bold text-dark mb-4">
-                    Discovery
-                  </h3>
+                {
+                  number: "02",
+                  title: "Planning",
+                  desc: "Creating strategy, wireframes, timelines and project roadmap.",
+                },
 
-                  <p className="paragraph">
-                    Understanding your business goals, audience, and project
-                    requirements.
-                  </p>
-                </div>
-              </motion.div>
+                {
+                  number: "03",
+                  title: "Development",
+                  desc: "Building scalable digital products using modern technologies.",
+                },
 
-              {/* STEP 2 */}
-              <motion.div
-                initial={{ opacity: 0, y: 80 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                viewport={{ once: true }}
-                className="relative bg-white rounded-3xl p-8 border border-gray-200 hover:border-primary transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
-              >
-                <div className="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center text-2xl font-bold mx-auto shadow-lg">
-                  02
-                </div>
+                {
+                  number: "04",
+                  title: "Launch & Growth",
+                  desc: "Launching, optimizing and scaling your business for growth.",
+                },
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{
+                    opacity: 0,
+                    y: 60,
+                  }}
+                  whileInView={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  transition={{
+                    duration: 0.5,
+                    delay: index * 0.1,
+                  }}
+                  viewport={{ once: true }}
+                  className="
+              group
 
-                <div className="text-center mt-8">
-                  <h3 className="text-2xl font-bold text-dark mb-4">
-                    Planning
-                  </h3>
+              relative
 
-                  <p className="paragraph">
-                    Creating strategy, wireframes, timelines, and project
-                    roadmap.
-                  </p>
-                </div>
-              </motion.div>
+              bg-white
 
-              {/* STEP 3 */}
-              <motion.div
-                initial={{ opacity: 0, y: 80 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                viewport={{ once: true }}
-                className="relative bg-white rounded-3xl p-8 border border-gray-200 hover:border-primary transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
-              >
-                <div className="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center text-2xl font-bold mx-auto shadow-lg">
-                  03
-                </div>
+              rounded-[30px]
 
-                <div className="text-center mt-8">
-                  <h3 className="text-2xl font-bold text-dark mb-4">
-                    Development
-                  </h3>
+              border
+              border-[#EAF2FF]
 
-                  <p className="paragraph">
-                    Building scalable digital products with modern technologies.
-                  </p>
-                </div>
-              </motion.div>
+              p-8
 
-              {/* STEP 4 */}
-              <motion.div
-                initial={{ opacity: 0, y: 80 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                viewport={{ once: true }}
-                className="relative bg-white rounded-3xl p-8 border border-gray-200 hover:border-primary transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
-              >
-                <div className="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center text-2xl font-bold mx-auto shadow-lg">
-                  04
-                </div>
+              shadow-[0_15px_40px_rgba(15,23,42,0.05)]
 
-                <div className="text-center mt-8">
-                  <h3 className="text-2xl font-bold text-dark mb-4">
-                    Launch & Growth
-                  </h3>
+              hover:-translate-y-2
+              hover:border-[#D7E7FF]
 
-                  <p className="paragraph">
-                    Launching, optimizing, and scaling your business for
-                    long-term growth.
-                  </p>
-                </div>
-              </motion.div>
+              transition-all
+              duration-500
+            "
+                >
+                  {/* NUMBER */}
+
+                  <div
+                    className="
+                relative
+                z-10
+
+                w-20
+                h-20
+
+                rounded-full
+
+                bg-[#EEF4FF]
+
+                border
+                border-[#DCE8FF]
+
+                flex
+                items-center
+                justify-center
+
+                mx-auto
+
+                text-[28px]
+                font-black
+
+                text-[#1D4ED8]
+
+                transition-all
+                duration-500
+
+                group-hover:bg-[#1D4ED8]
+                group-hover:text-white
+              "
+                  >
+                    {item.number}
+                  </div>
+
+                  {/* CONTENT */}
+
+                  <div className="text-center mt-8">
+                    <h3 className="text-[28px] font-bold text-[#071120] leading-[1.2]">
+                      {item.title}
+                    </h3>
+
+                    <p className="paragraph mt-5">{item.desc}</p>
+                  </div>
+
+                  {/* HOVER GLOW */}
+
+                  <div
+                    className="
+                absolute
+                inset-0
+
+                rounded-[30px]
+
+                opacity-0
+
+                bg-[radial-gradient(circle_at_top,rgba(29,78,216,0.08),transparent_70%)]
+
+                transition-all
+                duration-500
+
+                group-hover:opacity-100
+              "
+                  />
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
       {/* =========================================
-   LATEST BLOG SECTION
+    LATEST BLOG SECTION
 ========================================= */}
 
-      <section className="py-16 md:py-24 bg-white overflow-hidden">
-        <div className="container-custom">
-          <div className="grid grid-cols-1 lg:grid-cols-[420px_1fr] gap-10 lg:gap-16 items-center">
-            {/* LEFT */}
+      <section className="relative py-20 lg:py-28 overflow-hidden bg-white">
+        {/* BACKGROUND */}
 
-            <div>
-              <p className="text-primary font-semibold uppercase tracking-[4px] text-sm">
+        <div className="absolute inset-0 bg-[#F8FBFF]" />
+
+        {/* GRID */}
+
+        <div className="absolute inset-0 opacity-[0.025] bg-[linear-gradient(to_right,#1D4ED8_1px,transparent_1px),linear-gradient(to_bottom,#1D4ED8_1px,transparent_1px)] bg-[size:72px_72px]" />
+
+        {/* BLUR */}
+
+        <div className="absolute top-[-120px] left-[-80px] w-[320px] h-[320px] bg-[#1D4ED8]/10 rounded-full blur-[100px]" />
+
+        <div className="absolute bottom-[-120px] right-[-80px] w-[320px] h-[320px] bg-[#22C55E]/10 rounded-full blur-[100px]" />
+
+        {/* CONTAINER */}
+
+        <div className="container-custom relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-[420px_1fr] gap-14 lg:gap-20 items-center">
+            {/* =========================================
+          LEFT
+      ========================================= */}
+
+            <motion.div
+              initial={{
+                opacity: 0,
+                y: 50,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{
+                duration: 0.6,
+              }}
+              viewport={{ once: true }}
+            >
+              {/* BADGE */}
+
+              <div
+                className="
+            inline-flex
+            items-center
+            gap-2
+
+            px-5
+            py-2.5
+
+            rounded-full
+
+            bg-white
+
+            border
+            border-[#DCE8FF]
+
+            text-[#1D4ED8]
+            text-sm
+            font-semibold
+
+            shadow-sm
+          "
+              >
+                <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
                 Latest Blogs
-              </p>
+              </div>
 
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-outfit text-dark leading-tight mt-5">
+              {/* HEADING */}
+
+              <h2 className="heading-lg mt-7">
                 Latest Insights &
-                <br />
-                Marketing Blogs
+                <span className="block text-[#1D4ED8]">Marketing Blogs</span>
               </h2>
 
-              <p className="paragraph mt-8 text-base md:text-lg leading-relaxed">
-                Explore the latest SEO strategies, AI automation, branding
-                ideas, and digital marketing tips to grow your business faster.
+              {/* TEXT */}
+
+              <p className="paragraph mt-7 max-w-md">
+                Explore SEO strategies, branding ideas, digital marketing tips
+                and modern business growth insights from EverGrow Digital.
               </p>
 
-              <button className="gradient-btn mt-10">Explore All Blogs</button>
-            </div>
+              {/* BUTTON */}
 
-            {/* RIGHT SLIDER */}
+              <div className="mt-10">
+                <Link
+                  to="/blog"
+                  className="
+              inline-flex
+              items-center
+              justify-center
+
+              h-[56px]
+              px-8
+
+              rounded-full
+
+              bg-[#1D4ED8]
+
+              text-white
+              font-semibold
+
+              hover:bg-[#1840C4]
+
+              transition-all
+              duration-300
+            "
+                >
+                  Explore All Blogs
+                </Link>
+              </div>
+            </motion.div>
+
+            {/* =========================================
+          RIGHT SLIDER
+      ========================================= */}
 
             <div className="blog-slider-wrapper">
               <div className="blog-slider-track">
-                {[
-                  {
-                    icon: "🚀",
-                    title: "Top SEO Strategies To Rank Higher",
-                    desc: "Improve your rankings and increase traffic using advanced SEO techniques.",
-                  },
-
-                  {
-                    icon: "📈",
-                    title: "How AI Automation Helps Businesses",
-                    desc: "Automate customer support and workflows using powerful AI tools.",
-                  },
-
-                  {
-                    icon: "💻",
-                    title: "Modern Website Design Trends",
-                    desc: "Explore modern UI/UX design ideas for better engagement.",
-                  },
-
-                  {
-                    icon: "📱",
-                    title: "Social Media Marketing Tips",
-                    desc: "Grow your audience and increase engagement with strategic content.",
-                  },
-
-                  {
-                    icon: "🎯",
-                    title: "Google Ads Optimization Guide",
-                    desc: "Generate better ROI using optimized Google Ads campaigns.",
-                  },
-
-                  /* DUPLICATE */
-
-                  {
-                    icon: "🚀",
-                    title: "Top SEO Strategies To Rank Higher",
-                    desc: "Improve your rankings and increase traffic using advanced SEO techniques.",
-                  },
-
-                  {
-                    icon: "📈",
-                    title: "How AI Automation Helps Businesses",
-                    desc: "Automate customer support and workflows using powerful AI tools.",
-                  },
-
-                  {
-                    icon: "💻",
-                    title: "Modern Website Design Trends",
-                    desc: "Explore modern UI/UX design ideas for better engagement.",
-                  },
-                ].map((blog, index) => (
-                  <div
+                {[...blogs, ...blogs].map((blog, index) => (
+                  <motion.div
                     key={index}
+                    initial={{
+                      opacity: 0,
+                      y: 40,
+                    }}
+                    whileInView={{
+                      opacity: 1,
+                      y: 0,
+                    }}
+                    transition={{
+                      duration: 0.5,
+                      delay: index * 0.05,
+                    }}
+                    viewport={{ once: true }}
                     className="
+                group
+
                 blog-card
 
                 min-w-[280px]
                 sm:min-w-[320px]
                 md:min-w-[360px]
-              "
-                  >
-                    {/* ICON */}
 
-                    <div
-                      className="
-                w-16
-                h-16
+                bg-white
 
-                rounded-full
+                rounded-[30px]
 
-                bg-primary/10
+                border
+                border-[#EAF2FF]
 
-                flex
-                items-center
-                justify-center
+                overflow-hidden
 
-                text-3xl
+                shadow-[0_15px_40px_rgba(15,23,42,0.05)]
 
-                mb-8
-              "
-                    >
-                      {blog.icon}
-                    </div>
-
-                    {/* TITLE */}
-
-                    <h3
-                      className="
-                text-2xl
-                font-bold
-                text-dark
-                leading-snug
-              "
-                    >
-                      {blog.title}
-                    </h3>
-
-                    {/* DESC */}
-
-                    <p
-                      className="
-                paragraph
-                mt-6
-                leading-relaxed
-                text-base
-              "
-                    >
-                      {blog.desc}
-                    </p>
-
-                    {/* BUTTON */}
-
-                    <button
-                      className="
-                mt-8
-
-                text-primary
-                font-semibold
-
-                hover:translate-x-2
+                hover:-translate-y-2
+                hover:border-[#D7E7FF]
 
                 transition-all
-                duration-300
+                duration-500
               "
-                    >
-                      Read More →
-                    </button>
-                  </div>
+                  >
+                    {/* IMAGE */}
+
+                    <div className="relative overflow-hidden">
+                      <img
+                        src={blog.image}
+                        alt={blog.title}
+                        className="
+                    w-full
+                    h-[230px]
+
+                    object-cover
+
+                    transition-all
+                    duration-700
+
+                    group-hover:scale-105
+                  "
+                      />
+
+                      {/* CATEGORY */}
+
+                      <div className="absolute top-5 left-5">
+                        <span
+                          className="
+                      bg-white/90
+                      backdrop-blur-md
+
+                      px-4
+                      py-2
+
+                      rounded-full
+
+                      text-[13px]
+                      font-semibold
+
+                      text-[#1D4ED8]
+
+                      border
+                      border-white/40
+                    "
+                        >
+                          {blog.category}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* CONTENT */}
+
+                    <div className="p-7">
+                      {/* TITLE */}
+
+                      <h3
+                        className="
+                    text-[28px]
+                    font-bold
+
+                    text-[#071120]
+
+                    leading-[1.2]
+
+                    transition-all
+                    duration-300
+
+                    group-hover:text-[#1D4ED8]
+                  "
+                      >
+                        {blog.title}
+                      </h3>
+
+                      {/* DESC */}
+
+                      <p className="paragraph mt-5">{blog.description}</p>
+
+                      {/* BUTTON */}
+
+                      <Link
+                        to={`/blog/${blog.slug}`}
+                        className="
+                    inline-flex
+                    items-center
+
+                    mt-7
+
+                    text-[#1D4ED8]
+                    font-semibold
+
+                    transition-all
+                    duration-300
+
+                    group-hover:translate-x-2
+                  "
+                      >
+                        Read More →
+                      </Link>
+                    </div>
+                  </motion.div>
                 ))}
               </div>
             </div>
           </div>
         </div>
       </section>
+
+       {/* =========================================
+   Start here ..........................................................................
+========================================= */}
+
       {/* =========================================
    TECHNOLOGIES SECTION
 ========================================= */}
-
       <section className="py-16 md:py-24 bg-[#F8FAFC] overflow-hidden">
         <div className="container-custom">
           {/* TOP */}
@@ -1313,7 +2001,6 @@ const Home = () => {
       {/* =========================================
    RECENT PROJECTS STACK SLIDER
 ========================================= */}
-
       <section className="py-16 md:py-24 bg-[#F8FAFC] overflow-hidden">
         <div className="container-custom">
           {/* TOP */}
@@ -1478,7 +2165,6 @@ const Home = () => {
       {/* =========================================
    FAQ SECTION
 ========================================= */}
-
       <section className="py-16 md:py-24 bg-white overflow-hidden">
         <div className="container-custom">
           {/* TOP */}
@@ -1705,10 +2391,6 @@ const Home = () => {
       {/* =========================================
    CONTACT SECTION
 ========================================= */}
-      {/* =========================================
-   CONTACT SECTION
-========================================= */}
-
       <section className="py-16 md:py-24 bg-[#F8FAFC] overflow-hidden">
         <div className="container-custom">
           {/* TOP */}
@@ -1878,7 +2560,6 @@ const Home = () => {
       {/* =========================================
     SCROLL POPUP
 ========================================= */}
-
       {showPopup && (
         <div className="fixed inset-0 z-[9999] bg-black/70 backdrop-blur-sm flex items-center justify-center px-3 py-5 overflow-y-auto">
           {/* POPUP */}

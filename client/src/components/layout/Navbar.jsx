@@ -1,342 +1,657 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import {
+  useState,
+  useEffect,
+  useRef,
+} from "react";
 
 import {
-  HiOutlineMenuAlt3,
-  HiX,
-  HiChevronDown,
-  HiChevronRight,
-} from "react-icons/hi";
+  Link,
+  useLocation,
+} from "react-router-dom";
 
-import { motion, AnimatePresence } from "framer-motion";
+import {
+  Menu,
+  X,
+  ChevronDown,
+} from "lucide-react";
 
-const servicesData = [
-  {
-    title: "Web Development",
-    link: "/web-development",
-
-    subItems: [
-      "Business Website",
-      "E-Commerce Website",
-      "Portfolio Website",
-      "Landing Page",
-      "Custom Web App",
-    ],
-  },
-
-  {
-    title: "Digital Marketing",
-    link: "/digital-marketing",
-
-    subItems: [
-      "SEO Optimization",
-      "Google Ads",
-      "Meta Ads",
-      "Email Marketing",
-      "Social Media Marketing",
-    ],
-  },
-
-  {
-    title: "Graphics Designing",
-    link: "/graphics-designing",
-
-    subItems: [
-      "Logo Design",
-      "Banner Design",
-      "Social Media Posts",
-      "UI/UX Design",
-      "Brand Identity",
-    ],
-  },
-
-  {
-    title: "Video Editing",
-    link: "/video-editing",
-
-    subItems: [
-      "Reels Editing",
-      "YouTube Videos",
-      "Motion Graphics",
-      "Advertisement Videos",
-      "Promo Videos",
-    ],
-  },
-];
+import logo from "../../assets/logo-1.png";
 
 const Navbar = () => {
-  const [mobileMenu, setMobileMenu] = useState(false);
+  const [mobileMenu, setMobileMenu] =
+    useState(false);
 
-  const [servicesOpen, setServicesOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] =
+    useState(false);
 
-  const [activeSubmenu, setActiveSubmenu] = useState(0);
+  const [mobileServices, setMobileServices] =
+    useState(false);
 
   const location = useLocation();
 
-  return (
-    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-xl border-b border-gray-200">
-      <div className="container-custom h-20 flex items-center justify-between">
-        {/* LOGO */}
-        <Link
-          to="/"
-          className="text-2xl md:text-3xl font-bold font-outfit text-primary"
-        >
-          GrowthGarage
-        </Link>
+  const servicesRef = useRef(null);
 
-        {/* DESKTOP NAV */}
-        <nav className="hidden lg:flex items-center gap-8">
-          {/* HOME */}
+  /* =====================================
+      CLOSE DROPDOWN ON OUTSIDE CLICK
+  ===================================== */
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        servicesRef.current &&
+        !servicesRef.current.contains(
+          event.target
+        )
+      ) {
+        setServicesOpen(false);
+      }
+    };
+
+    document.addEventListener(
+      "mousedown",
+      handleClickOutside
+    );
+
+    return () => {
+      document.removeEventListener(
+        "mousedown",
+        handleClickOutside
+      );
+    };
+  }, []);
+
+  /* =====================================
+      NAV LINKS
+  ===================================== */
+
+  const navLinks = [
+    {
+      name: "Home",
+      path: "/",
+    },
+
+    {
+      name: "About",
+      path: "/about",
+    },
+
+    {
+      name: "Portfolio",
+      path: "/portfolio",
+    },
+
+    {
+      name: "Blog",
+      path: "/blog",
+    },
+
+    {
+      name: "Contact",
+      path: "/contact",
+    },
+  ];
+
+  /* =====================================
+      SERVICES
+  ===================================== */
+
+  const services = [
+    {
+      name: "Web Development",
+      path: "/web-development",
+    },
+
+    {
+      name: "Digital Marketing",
+      path: "/digital-marketing",
+    },
+
+    {
+      name: "Graphics Designing",
+      path: "/graphics-designing",
+    },
+
+    {
+      name: "Video Editing",
+      path: "/video-editing",
+    },
+
+    {
+      name: "SEO Optimization",
+      path: "/seo-optimization",
+    },
+
+    {
+      name: "AI Automation",
+      path: "/ai-automation",
+    },
+  ];
+
+  return (
+    <header
+      className="
+        sticky
+        top-0
+        z-50
+
+        bg-white/90
+        backdrop-blur-2xl
+
+        border-b
+        border-[#EDF4FF]
+
+        shadow-[0_4px_30px_rgba(0,0,0,0.03)]
+      "
+    >
+      <div className="container-custom">
+        <div
+          className="
+            h-[72px]
+            sm:h-[78px]
+            lg:h-[82px]
+
+            flex
+            items-center
+            justify-between
+          "
+        >
+          {/* =====================================
+                LOGO
+          ===================================== */}
+
           <Link
             to="/"
-            className={`font-medium transition hover:text-primary ${
-              location.pathname === "/" ? "text-primary" : "text-gray-700"
-            }`}
+            className="flex items-center"
           >
-            Home
+            <img
+              src={logo}
+              alt="EverGrow Digital"
+              className="
+                w-[145px]
+                sm:w-[170px]
+                md:w-[190px]
+                lg:w-[210px]
+
+                object-contain
+              "
+            />
           </Link>
 
-          {/* ABOUT */}
-          <Link
-            to="/about"
-            className={`font-medium transition hover:text-primary ${
-              location.pathname === "/about" ? "text-primary" : "text-gray-700"
-            }`}
-          >
-            About
-          </Link>
+          {/* =====================================
+                DESKTOP NAV
+          ===================================== */}
 
-          {/* SERVICES */}
-          <div
-            className="relative"
-            onMouseEnter={() => setServicesOpen(true)}
-            onMouseLeave={() => setServicesOpen(false)}
-          >
-            <button className="flex items-center gap-1 font-medium text-gray-700 hover:text-primary transition">
-              Services
-              <HiChevronDown
-                className={`transition duration-300 ${
-                  servicesOpen ? "rotate-180" : ""
-                }`}
-              />
-            </button>
+          <nav className="hidden lg:flex items-center gap-10">
+            {/* HOME + ABOUT */}
 
-            <AnimatePresence>
-              {servicesOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 15 }}
-                  transition={{ duration: 0.2 }}
-                  className="absolute top-12 left-1/2 -translate-x-1/2 flex flex-col xl:flex-row bg-white shadow-2xl rounded-3xl overflow-hidden border border-gray-100 w-[95vw] max-w-[900px]"
+            {navLinks
+              .slice(0, 2)
+              .map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  className={`
+                    relative
+
+                    text-[15px]
+                    font-medium
+
+                    transition-all
+                    duration-300
+
+                    hover:text-[#1D4ED8]
+
+                    ${
+                      location.pathname ===
+                      item.path
+                        ? "text-[#1D4ED8]"
+                        : "text-gray-700"
+                    }
+
+                    after:absolute
+                    after:left-0
+                    after:-bottom-2
+
+                    after:h-[2px]
+
+                    after:bg-[#1D4ED8]
+
+                    after:transition-all
+                    after:duration-300
+
+                    ${
+                      location.pathname ===
+                      item.path
+                        ? "after:w-full"
+                        : "after:w-0 hover:after:w-full"
+                    }
+                  `}
                 >
-                  {/* LEFT MENU */}
-                  <div className="w-full xl:w-[280px] bg-gray-50 border-b xl:border-b-0 xl:border-r border-gray-100 p-4">
-                    {servicesData.map((item, index) => (
-                      <button
-                        key={index}
-                        onMouseEnter={() => setActiveSubmenu(index)}
-                        className={`w-full flex items-center justify-between px-5 py-4 rounded-2xl text-left transition-all duration-300 ${
-                          activeSubmenu === index
-                            ? "bg-primary text-white shadow-lg"
-                            : "hover:bg-white text-gray-700"
-                        }`}
-                      >
-                        {item.title}
+                  {item.name}
+                </Link>
+              ))}
 
-                        <HiChevronRight />
-                      </button>
-                    ))}
-                  </div>
+            {/* =====================================
+                  SERVICES
+            ===================================== */}
 
-                  {/* RIGHT SIDE */}
-                  <div className="flex-1 p-6">
-                    <h3 className="text-3xl font-bold text-dark mb-7">
-                      {servicesData[activeSubmenu].title}
-                    </h3>
+            <div
+              className="relative"
+              ref={servicesRef}
+            >
+              <button
+                onClick={() =>
+                  setServicesOpen(
+                    !servicesOpen
+                  )
+                }
+                className="
+                  flex
+                  items-center
+                  gap-2
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {servicesData[activeSubmenu].subItems.map(
-                        (subItem, index) => (
-                          <Link
-                            key={index}
-                            to={servicesData[activeSubmenu].link}
-                            className="p-5 rounded-2xl border border-gray-100 hover:border-primary hover:bg-primary/5 transition-all duration-300 text-gray-700 font-medium"
-                          >
-                            {subItem}
-                          </Link>
-                        ),
-                      )}
-                    </div>
+                  text-[15px]
+                  font-medium
 
-                    <Link
-                      to={servicesData[activeSubmenu].link}
-                      className="inline-flex mt-8 gradient-btn"
-                    >
-                      Explore Service
-                    </Link>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+                  text-gray-700
 
-          {/* PORTFOLIO */}
-          <Link
-            to="/portfolio"
-            className={`font-medium transition hover:text-primary ${
-              location.pathname === "/portfolio"
-                ? "text-primary"
-                : "text-gray-700"
-            }`}
-          >
-            Portfolio
-          </Link>
+                  hover:text-[#1D4ED8]
 
-          {/* BLOG */}
-          <Link
-            to="/blog"
-            className={`font-medium transition hover:text-primary ${
-              location.pathname === "/blog" ? "text-primary" : "text-gray-700"
-            }`}
-          >
-            Blog
-          </Link>
+                  transition-all
+                  duration-300
+                "
+              >
+                Services
 
-          {/* CONTACT */}
-          <Link
-            to="/contact"
-            className={`font-medium transition hover:text-primary ${
-              location.pathname === "/contact"
-                ? "text-primary"
-                : "text-gray-700"
-            }`}
-          >
-            Contact
-          </Link>
-
-          {/* CTA */}
-          {/* CTA */}
-
-          <Link to="/contact" className="gradient-btn">
-            Free Consultation
-          </Link>
-        </nav>
-
-        {/* MOBILE BUTTON */}
-        <button
-          onClick={() => setMobileMenu(!mobileMenu)}
-          className="lg:hidden text-3xl text-dark"
-        >
-          {mobileMenu ? <HiX /> : <HiOutlineMenuAlt3 />}
-        </button>
-      </div>
-
-      {/* MOBILE MENU */}
-      <AnimatePresence>
-        {mobileMenu && (
-          <motion.div
-            initial={{ opacity: 0, x: "100%" }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: "100%" }}
-            transition={{ duration: 0.3 }}
-            className="fixed top-0 right-0 w-full sm:w-[400px] h-screen bg-white z-[999] shadow-2xl overflow-y-auto"
-          >
-            {/* TOP */}
-            <div className="flex items-center justify-between p-5 border-b border-gray-200">
-              <h2 className="text-2xl font-bold text-primary">Menu</h2>
-
-              <button onClick={() => setMobileMenu(false)} className="text-3xl">
-                <HiX />
+                <ChevronDown
+                  size={18}
+                  className={`transition duration-300 ${
+                    servicesOpen
+                      ? "rotate-180"
+                      : ""
+                  }`}
+                />
               </button>
+
+              {/* DROPDOWN */}
+
+              {servicesOpen && (
+                <div
+                  className="
+                    absolute
+                    top-[62px]
+                    left-0
+
+                    w-[300px]
+
+                    bg-white
+
+                    rounded-[24px]
+
+                    border
+                    border-[#EDF4FF]
+
+                    shadow-[0_25px_60px_rgba(0,0,0,0.08)]
+
+                    p-3
+                  "
+                >
+                  <div className="space-y-2">
+                    {services.map(
+                      (service) => (
+                        <Link
+                          key={
+                            service.name
+                          }
+                          to={
+                            service.path
+                          }
+                          onClick={() =>
+                            setServicesOpen(
+                              false
+                            )
+                          }
+                          className="
+                            flex
+                            items-center
+                            justify-between
+
+                            px-5
+                            py-4
+
+                            rounded-2xl
+
+                            text-[15px]
+                            font-medium
+
+                            text-gray-700
+
+                            hover:bg-[#F5F9FF]
+                            hover:text-[#1D4ED8]
+
+                            transition-all
+                            duration-300
+                          "
+                        >
+                          {service.name}
+
+                          <span className="opacity-40">
+                            ↗
+                          </span>
+                        </Link>
+                      )
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* LINKS */}
-            <div className="p-5 flex flex-col gap-5">
-              <Link
-                to="/"
-                onClick={() => setMobileMenu(false)}
-                className="font-medium text-gray-700"
-              >
-                Home
-              </Link>
+            {/* OTHER LINKS */}
 
-              <Link
-                to="/about"
-                onClick={() => setMobileMenu(false)}
-                className="font-medium text-gray-700"
-              >
-                About
-              </Link>
+            {navLinks
+              .slice(2)
+              .map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  className={`
+                    relative
+
+                    text-[15px]
+                    font-medium
+
+                    transition-all
+                    duration-300
+
+                    hover:text-[#1D4ED8]
+
+                    ${
+                      location.pathname ===
+                      item.path
+                        ? "text-[#1D4ED8]"
+                        : "text-gray-700"
+                    }
+
+                    after:absolute
+                    after:left-0
+                    after:-bottom-2
+
+                    after:h-[2px]
+
+                    after:bg-[#1D4ED8]
+
+                    after:transition-all
+                    after:duration-300
+
+                    ${
+                      location.pathname ===
+                      item.path
+                        ? "after:w-full"
+                        : "after:w-0 hover:after:w-full"
+                    }
+                  `}
+                >
+                  {item.name}
+                </Link>
+              ))}
+          </nav>
+
+          {/* =====================================
+                DESKTOP BUTTON
+          ===================================== */}
+
+          <div className="hidden lg:flex items-center">
+            <Link
+              to="/contact"
+              className="
+                h-[48px]
+                px-7
+
+                rounded-full
+
+                bg-[#1D4ED8]
+
+                text-white
+                text-[14px]
+                font-semibold
+
+                flex
+                items-center
+                justify-center
+
+                shadow-[0_8px_24px_rgba(29,78,216,0.18)]
+
+                hover:bg-[#1840C4]
+
+                transition-all
+                duration-300
+              "
+            >
+              Free Consultation
+            </Link>
+          </div>
+
+          {/* =====================================
+                MOBILE MENU BUTTON
+          ===================================== */}
+
+          <button
+            onClick={() =>
+              setMobileMenu(!mobileMenu)
+            }
+            className="
+              lg:hidden
+
+              w-10
+              h-10
+              sm:w-11
+              sm:h-11
+
+              rounded-full
+
+              border
+              border-[#DCE8FF]
+
+              flex
+              items-center
+              justify-center
+
+              text-[#1D4ED8]
+
+              bg-[#F8FBFF]
+
+              hover:bg-[#EEF4FF]
+
+              transition-all
+              duration-300
+            "
+          >
+            {mobileMenu ? (
+              <X size={22} />
+            ) : (
+              <Menu size={22} />
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* =====================================
+            MOBILE MENU
+      ===================================== */}
+
+      {mobileMenu && (
+        <div
+          className="
+            lg:hidden
+
+            bg-white
+
+            border-t
+            border-[#EDF4FF]
+
+            shadow-2xl
+          "
+        >
+          <div className="container-custom py-6">
+            <div className="flex flex-col gap-2">
+              {/* LINKS */}
+
+              {navLinks.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  onClick={() =>
+                    setMobileMenu(false)
+                  }
+                  className={`
+                    px-5
+                    py-4
+
+                    rounded-2xl
+
+                    text-[15px]
+                    font-medium
+
+                    transition-all
+                    duration-300
+
+                    ${
+                      location.pathname ===
+                      item.path
+                        ? "bg-[#1D4ED8] text-white"
+                        : "text-gray-700 hover:bg-[#F5F9FF]"
+                    }
+                  `}
+                >
+                  {item.name}
+                </Link>
+              ))}
 
               {/* MOBILE SERVICES */}
-              <div className="border rounded-3xl p-5">
-                <h3 className="font-bold text-xl mb-5">Services</h3>
 
-                <div className="space-y-6">
-                  {servicesData.map((item, index) => (
-                    <div key={index}>
-                      <Link
-                        to={item.link}
-                        onClick={() => setMobileMenu(false)}
-                        className="font-semibold text-primary text-lg"
-                      >
-                        {item.title}
-                      </Link>
+              <div className="mt-2 bg-[#F8FBFF] rounded-[24px] p-3">
+                <button
+                  onClick={() =>
+                    setMobileServices(
+                      !mobileServices
+                    )
+                  }
+                  className="
+                    w-full
 
-                      <div className="pl-3 mt-3 flex flex-col gap-3">
-                        {item.subItems.map((subItem, subIndex) => (
-                          <Link
-                            key={subIndex}
-                            to={item.link}
-                            onClick={() => setMobileMenu(false)}
-                            className="text-gray-600 text-sm hover:text-primary transition"
-                          >
-                            {subItem}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                    flex
+                    items-center
+                    justify-between
+
+                    px-3
+                    py-3
+
+                    text-[15px]
+                    font-semibold
+
+                    text-[#1D4ED8]
+                  "
+                >
+                  Services
+
+                  <ChevronDown
+                    size={18}
+                    className={`transition duration-300 ${
+                      mobileServices
+                        ? "rotate-180"
+                        : ""
+                    }`}
+                  />
+                </button>
+
+                {mobileServices && (
+                  <div className="mt-2 space-y-2">
+                    {services.map(
+                      (service) => (
+                        <Link
+                          key={
+                            service.name
+                          }
+                          to={
+                            service.path
+                          }
+                          onClick={() => {
+                            setMobileMenu(
+                              false
+                            );
+
+                            setMobileServices(
+                              false
+                            );
+                          }}
+                          className="
+                            block
+
+                            px-4
+                            py-4
+
+                            rounded-2xl
+
+                            text-[14px]
+                            font-medium
+
+                            text-gray-700
+
+                            hover:bg-white
+                            hover:text-[#1D4ED8]
+
+                            transition-all
+                            duration-300
+                          "
+                        >
+                          {
+                            service.name
+                          }
+                        </Link>
+                      )
+                    )}
+                  </div>
+                )}
               </div>
 
-              <Link
-                to="/portfolio"
-                onClick={() => setMobileMenu(false)}
-                className="font-medium text-gray-700"
-              >
-                Portfolio
-              </Link>
-
-              <Link
-                to="/blog"
-                onClick={() => setMobileMenu(false)}
-                className="font-medium text-gray-700"
-              >
-                Blog
-              </Link>
+              {/* MOBILE BUTTON */}
 
               <Link
                 to="/contact"
-                onClick={() => setMobileMenu(false)}
-                className="font-medium text-gray-700"
-              >
-                Contact
-              </Link>
+                onClick={() =>
+                  setMobileMenu(false)
+                }
+                className="
+                  mt-4
 
-              {/* CTA */}
-              <Link
-                to="/contact"
-                onClick={() => setMobileMenu(false)}
-                className="gradient-btn w-full mt-4 text-center block"
+                  h-[50px]
+
+                  rounded-full
+
+                  bg-[#1D4ED8]
+
+                  text-white
+                  text-[14px]
+                  font-semibold
+
+                  flex
+                  items-center
+                  justify-center
+
+                  shadow-[0_8px_24px_rgba(29,78,216,0.16)]
+
+                  hover:bg-[#1840C4]
+
+                  transition-all
+                  duration-300
+                "
               >
                 Free Consultation
               </Link>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        </div>
+      )}
     </header>
   );
 };

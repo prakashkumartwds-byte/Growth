@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -9,47 +9,441 @@ html {
 }
 
 body {
-  @apply bg-white text-dark font-inter overflow-x-hidden;
+
+  background: #ffffff;
+
+  color: #071B3B;
+
+  font-family: "Inter", sans-serif;
+
+  overflow-x: hidden;
+}
+/* ========================================
+  Marquee */
+
+
+.topbar-marquee {
+  display: flex;
+  align-items: center;
+  gap: 70px;
+
+  width: max-content;
+
+  padding-left: 100%;
+
+  animation: topbarScroll 30s linear infinite;
 }
 
-/* Reusable Container */
+.topbar-marquee span {
+  white-space: nowrap;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  color: #f3f4f6;
+}
+
+.topbar-marquee span:nth-child(even) {
+  color: #22c55e;
+}
+
+.topbar-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes topbarScroll {
+  from {
+    transform: translateX(0%);
+  }
+
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+  .topbar-marquee {
+    gap: 40px;
+    animation-duration: 22s;
+  }
+
+  .topbar-marquee span {
+    font-size: 11px;
+  }
+}
+/* ========================================
+   CONTAINER
+======================================== */
+
 .container-custom {
-  @apply max-w-7xl mx-auto px-4 md:px-6 lg:px-8;
+  max-width: 1600px;
+
+
+  margin: auto;
+
+  padding-left: 20px;
+
+  padding-right: 20px;
+}
+.container-custom-top {
+ 
+
+
+  margin: auto;
+
+  padding-left: 20px;
+
+  padding-right: 20px;
 }
 
-/* Section Spacing */
+/* ========================================
+   SECTION
+======================================== */
+
 .section-padding {
-  @apply py-20 md:py-28;
+
+  padding-top: 100px;
+
+  padding-bottom: 100px;
 }
 
-/* Glass Effect */
+
+/* ========================================
+   GLASS EFFECT
+======================================== */
+
 .glass {
-  @apply bg-white/70 backdrop-blur-lg border border-white/20 shadow-glass;
+
+  background: rgba(255,255,255,0.7);
+
+  backdrop-filter: blur(18px);
+
+  border: 1px solid rgba(255,255,255,0.3);
+
+  box-shadow: 0 10px 40px rgba(19,196,163,0.08);
 }
 
-/* Gradient Button */
+
+/* ========================================
+   BUTTONS
+======================================== */
+
 .gradient-btn {
-  @apply bg-gradient-to-r from-primary to-accent text-white px-6 py-3 rounded-full font-medium hover:scale-105 transition-all duration-300;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  background: linear-gradient(
+    135deg,
+    #13C4A3,
+    #0A4D8C
+  );
+
+  color: white;
+
+  padding: 15px 34px;
+
+  border-radius: 999px;
+
+  font-weight: 600;
+
+  transition: 0.3s ease;
+
+  box-shadow: 0 12px 30px rgba(19,196,163,0.25);
 }
 
-/* Secondary Button */
+.gradient-btn:hover {
+
+  transform: translateY(-3px) scale(1.02);
+
+  box-shadow: 0 18px 40px rgba(10,77,140,0.25);
+}
+
+
+/* OUTLINE */
+
 .outline-btn {
-  @apply border border-primary text-primary px-6 py-3 rounded-full font-medium hover:bg-primary hover:text-white transition-all duration-300;
+
+  border: 2px solid #13C4A3;
+
+  color: #13C4A3;
+
+  padding: 15px 34px;
+
+  border-radius: 999px;
+
+  font-weight: 600;
+
+  transition: 0.3s ease;
 }
 
-/* Heading */
+.outline-btn:hover {
+
+  background: #13C4A3;
+
+  color: white;
+}
+
+/* ========================================
+   GLOBAL TYPOGRAPHY SYSTEM
+======================================== */
+
+/* ONLY ONE H1 IN WEBSITE */
+
+h1,
 .heading-xl {
-  @apply text-4xl md:text-6xl font-bold leading-tight font-outfit;
+
+  font-family: "Outfit", sans-serif;
+
+  font-size: clamp(42px, 7vw, 72px);
+
+  font-weight: 800;
+
+  line-height: 1;
+
+  letter-spacing: -3px;
+
+  color: #071120;
 }
 
+
+/* SECTION HEADINGS */
+
+h2,
 .heading-lg {
-  @apply text-3xl md:text-5xl font-bold font-outfit;
+
+  font-family: "Outfit", sans-serif;
+
+  font-size: clamp(30px, 5vw, 52px);
+
+  font-weight: 800;
+
+  line-height: 1.08;
+
+  letter-spacing: -2px;
+
+  color: #071120;
 }
 
+
+/* SUB HEADINGS */
+
+h3 {
+
+  font-family: "Outfit", sans-serif;
+
+  font-size: clamp(22px, 3vw, 30px);
+
+  font-weight: 700;
+
+  line-height: 1.2;
+
+  color: #071120;
+}
+
+
+/* NORMAL TEXT */
+
+p,
 .paragraph {
-  @apply text-gray-600 leading-relaxed;
+
+  font-size: 16px;
+
+  line-height: 1.8;
+
+  color: #64748B;
 }
 
+
+/* SMALL TEXT */
+
+.small-text {
+
+  font-size: 14px;
+
+  line-height: 1.7;
+
+  color: #94A3B8;
+}
+
+
+/* SECTION SPACING */
+
+.section-padding {
+
+  padding-top: 110px;
+
+  padding-bottom: 110px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+  h1,
+  .heading-xl {
+
+    letter-spacing: -2px;
+  }
+
+  h2,
+  .heading-lg {
+
+    letter-spacing: -1px;
+  }
+
+  p,
+  .paragraph {
+
+    font-size: 15px;
+  }
+
+  .section-padding {
+
+    padding-top: 80px;
+
+    padding-bottom: 80px;
+  }
+
+}
+
+
+/* ========================================
+   Brands & Agencies
+======================================== */
+
+.client-slider-track {
+  display: flex;
+  align-items: center;
+
+  width: max-content;
+
+  animation: clientSlider 28s linear infinite;
+}
+
+.client-slider-track:hover {
+  animation-play-state: paused;
+}
+
+.client-logo-card {
+  width: 230px;
+  height: 110px;
+
+  margin-right: 22px;
+
+  backdrop-filter: blur(12px);
+}
+
+@keyframes clientSlider {
+  from {
+    transform: translateX(0%);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+  .client-logo-card {
+    width: 160px;
+    height: 78px;
+
+    margin-right: 14px;
+
+    border-radius: 18px;
+  }
+
+  .client-slider-track {
+    animation-duration: 18s;
+  }
+}
+
+/* ========================================
+   SECTION BADGE
+======================================== */
+
+.section-badge {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 12px 22px;
+
+  border-radius: 999px;
+
+  background: rgba(19,196,163,0.1);
+
+  border: 1px solid rgba(19,196,163,0.15);
+
+  color: #13C4A3;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+}
+
+
+/* ========================================
+   CARD DESIGN
+======================================== */
+
+.premium-card {
+
+  background: white;
+
+  border-radius: 30px;
+
+  border: 1px solid #E2E8F0;
+
+  box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+
+  transition: 0.35s ease;
+}
+
+.premium-card:hover {
+
+  transform: translateY(-8px);
+
+  border-color: #13C4A3;
+
+  box-shadow: 0 25px 50px rgba(19,196,163,0.15);
+}
+
+
+/* ========================================
+   SCROLLBAR
+======================================== */
+
+::-webkit-scrollbar {
+
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+
+  background: linear-gradient(
+    #13C4A3,
+    #0A4D8C
+  );
+
+  border-radius: 999px;
+}
 
 /* ========================================
    INFINITE CLIENT SLIDER

@@ -1,5 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 
+import ScrollToTop from "../components/common/ScrollToTop";
+
 import Home from "../pages/Home";
 import About from "../pages/About";
 import Services from "../pages/Services";
@@ -14,22 +16,42 @@ import Contact from "../pages/Contact";
 
 const AppRoutes = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/services" element={<Services />} />
-      <Route path="/web-development" element={<WebDevelopment />} />
+    <>
+      <ScrollToTop />
 
-      <Route path="/digital-marketing" element={<DigitalMarketing />} />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/web-development" element={<WebDevelopment />} />
 
-      <Route path="/graphics-designing" element={<GraphicsDesigning />} />
+        <Route
+          path="/digital-marketing"
+          element={<DigitalMarketing />}
+        />
 
-      <Route path="/video-editing" element={<VideoEditing />} />
-      <Route path="/portfolio" element={<Portfolio />} />
-      <Route path="/blog" element={<Blog />} />
-      <Route path="/blog/:slug" element={<SingleBlog />} />
-      <Route path="/contact" element={<Contact />} />
-    </Routes>
+        <Route
+          path="/graphics-designing"
+          element={<GraphicsDesigning />}
+        />
+
+        <Route
+          path="/video-editing"
+          element={<VideoEditing />}
+        />
+
+        <Route path="/portfolio" element={<Portfolio />} />
+
+        <Route path="/blog" element={<Blog />} />
+
+        <Route
+          path="/blog/:slug"
+          element={<SingleBlog />}
+        />
+
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+    </>
   );
 };
 
